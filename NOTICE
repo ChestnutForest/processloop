@@ -1,0 +1,16 @@
+﻿processloop
+Copyright (C) 2026 <あなた/組織名>
+
+This product is a derivative work based on Process Dashboard,
+licensed under the GNU General Public License, version 3.
+
+Original: https://www.processdash.com/
+Changes: 製品名の変更、および Java/Swing から Next.js への移植。
+
+PSP, TSP, Personal Software Process, and Team Software Process are
+service marks of Carnegie Mellon University. This project is not
+affiliated with nor endorsed by Carnegie Mellon University.
+
+The PSP/TSP scripts and forms modules bundled with the original
+Process Dashboard are subject to separate Carnegie Mellon University /
+SEI terms and are NOT included or ported here without separate handling.

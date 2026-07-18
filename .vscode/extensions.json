@@ -1,0 +1,47 @@
+{
+  "recommendations": [
+    // --- Core: Next.js / React / TypeScript ---
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "dsznajder.es7-react-js-snippets",
+    "formulahendry.auto-rename-tag",
+    "christian-kohler.path-intellisense",
+    "christian-kohler.npm-intellisense",
+    "yoavbls.pretty-ts-errors",
+
+    // --- Styling (Tailwind を使う場合) ---
+    "bradlc.vscode-tailwindcss",
+
+    // --- 多言語対応 (en/ja): 未訳キー・ハードコード文字列の可視化 ---
+    "lokalise.i18n-ally",
+
+    // --- Quality / DX ---
+    "usernamehw.errorlens",
+    "editorconfig.editorconfig",
+    "streetsidesoftware.code-spell-checker",
+    "mikestead.dotenv",
+    "wix.vscode-import-cost",
+
+    // --- Git ---
+    "eamodio.gitlens",
+    "mhutchie.git-graph",
+
+    // --- Testing ---
+    "vitest.explorer",
+    "ms-playwright.playwright",
+
+    // --- API 動作確認 (バックエンド) ---
+    "humao.rest-client",
+
+    // --- Windows: WSL / Docker / Dev Containers (使う場合) ---
+    "ms-vscode-remote.remote-wsl",
+    "ms-azuretools.vscode-docker",
+    "ms-vscode-remote.remote-containers",
+
+    // --- Markdown (docs 用) ---
+    "yzhang.markdown-all-in-one",
+
+    // --- 移植元 Java を「読む」ためだけ (④: 変換はしない。参照専用) ---
+    "vscjava.vscode-java-pack"
+  ]
+}

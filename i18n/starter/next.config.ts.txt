@@ -1,0 +1,11 @@
+import type { NextConfig } from 'next';
+import createNextIntlPlugin from 'next-intl/plugin';
+
+// i18n の設定ファイルの場所を指定
+const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
+
+const nextConfig: NextConfig = {
+  // 必要な設定をここに追加
+};
+
+export default withNextIntl(nextConfig);

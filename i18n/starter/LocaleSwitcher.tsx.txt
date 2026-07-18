@@ -1,0 +1,29 @@
+'use client';
+
+import { useLocale, useTranslations } from 'next-intl';
+import { usePathname, useRouter } from 'next/navigation';
+import { routing } from '@/i18n/routing';
+
+/** 英語 / 日本語を切り替えるセレクタ */
+export default function LocaleSwitcher() {
+  const t = useTranslations('settings');
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  function onChange(next: string) {
+    // 先頭の /en or /ja を差し替える
+    const rest = pathname.replace(new RegExp(`^/(${routing.locales.join('|')})`), '');
+    router.replace(`/${next}${rest || ''}`);
+  }
+
+  return (
+    <label>
+      {t('language')}
+      <select value={locale} onChange={(e) => onChange(e.target.value)}>
+        <option value="en">{t('languageEn')}</option>
+        <option value="ja">{t('languageJa')}</option>
+      </select>
+    </label>
+  );
+}

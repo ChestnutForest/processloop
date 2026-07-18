@@ -1,0 +1,22 @@
+import { getRequestConfig } from 'next-intl/server';
+import { routing } from './routing';
+
+export default getRequestConfig(async ({ requestLocale }) => {
+  const requested = await requestLocale;
+  const locale =
+    requested && routing.locales.includes(requested as any)
+      ? requested
+      : routing.defaultLocale;
+
+  // 翻訳リソース。既定は frontend/messages/{locale}.json を読む。
+  // リポジトリ直下 i18n/messages を単一の情報源にする場合はこのパスを変更する。
+  const messages = (await import(`../../messages/${locale}.json`)).default;
+
+  // 未訳キーは en へフォールバック
+  const fallback = (await import(`../../messages/${routing.defaultLocale}.json`)).default;
+
+  return {
+    locale,
+    messages: { ...fallback, ...messages }
+  };
+});

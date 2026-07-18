@@ -1,0 +1,10 @@
+import createMiddleware from 'next-intl/middleware';
+import { routing } from './i18n/routing';
+
+// ブラウザの Accept-Language を見て /en か /ja へ振り分ける
+export default createMiddleware(routing);
+
+export const config = {
+  // 静的ファイル・API を除く全パスを対象
+  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)']
+};

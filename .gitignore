@@ -1,0 +1,17 @@
+﻿# deps / build
+node_modules/
+.next/
+dist/
+build/
+out/
+coverage/
+
+# env / secrets
+.env
+.env.*
+!.env.example
+
+# logs / os
+*.log
+.DS_Store
+Thumbs.db

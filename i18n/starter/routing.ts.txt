@@ -1,0 +1,14 @@
+import { defineRouting } from 'next-intl/routing';
+
+export const routing = defineRouting({
+  // 対応ロケール: 英語 / 日本語
+  locales: ['en', 'ja'],
+
+  // 既定ロケール（未訳キーのフォールバック先も en）
+  defaultLocale: 'en',
+
+  // URL 例: /en/dashboard , /ja/dashboard
+  localePrefix: 'always'
+});
+
+export type Locale = (typeof routing.locales)[number];

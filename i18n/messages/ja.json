@@ -1,0 +1,46 @@
+{
+  "_meta": {
+    "locale": "ja",
+    "note": "en.json とキー構造を必ず一致させること。未訳キーは en へフォールバックする。"
+  },
+
+  "app": {
+    "name": "Processloop",
+    "tagline": "計画・計測・実装・テスト・リリース・運用・改善のループ"
+  },
+
+  "nav": {
+    "dashboard": "ダッシュボード",
+    "plan": "計画",
+    "timeLog": "時間記録",
+    "defects": "欠陥",
+    "size": "規模",
+    "reports": "レポート",
+    "settings": "設定"
+  },
+
+  "common": {
+    "save": "保存",
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "edit": "編集",
+    "add": "追加",
+    "close": "閉じる",
+    "search": "検索",
+    "loading": "読み込み中...",
+    "noData": "データがありません",
+    "confirm": "よろしいですか?"
+  },
+
+  "settings": {
+    "language": "言語",
+    "languageEn": "English",
+    "languageJa": "日本語"
+  },
+
+  "error": {
+    "generic": "エラーが発生しました。",
+    "notFound": "ページが見つかりません。",
+    "required": "この項目は必須です。"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "_meta": {
+    "locale": "en",
+    "note": "Source locale. Keys are defined here first, then translated in ja.json."
+  },
+
+  "app": {
+    "name": "Processloop",
+    "tagline": "Plan, measure, build, test, release, operate, improve."
+  },
+
+  "nav": {
+    "dashboard": "Dashboard",
+    "plan": "Plan",
+    "timeLog": "Time Log",
+    "defects": "Defects",
+    "size": "Size",
+    "reports": "Reports",
+    "settings": "Settings"
+  },
+
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "close": "Close",
+    "search": "Search",
+    "loading": "Loading...",
+    "noData": "No data",
+    "confirm": "Are you sure?"
+  },
+
+  "settings": {
+    "language": "Language",
+    "languageEn": "English",
+    "languageJa": "Japanese"
+  },
+
+  "error": {
+    "generic": "Something went wrong.",
+    "notFound": "Page not found.",
+    "required": "This field is required."
+  }
+}

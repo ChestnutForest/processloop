@@ -1,0 +1,48 @@
+{
+  // 保存時に整形 + ESLint 自動修正
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // Windows でも改行を LF に統一（GPLv3 の元コードとの差分を無用に増やさない）
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+
+  // フロントエンド / バックエンドをそれぞれ ESLint のルートとして扱う
+  "eslint.workingDirectories": [
+    { "directory": "frontend", "changeProcessCWD": true },
+    { "directory": "backend", "changeProcessCWD": true }
+  ],
+
+  // 各プロジェクトの TypeScript を使う（未 init のうちは無害）
+  "typescript.tsdk": "frontend/node_modules/typescript/lib",
+
+  // --- 多言語対応 (en / ja) : i18n Ally ---
+  "i18n-ally.localesPaths": ["i18n/messages", "frontend/messages"],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.sourceLanguage": "en",
+  "i18n-ally.displayLanguage": "ja",
+  "i18n-ally.enabledFrameworks": ["next-intl"],
+  // ハードコードされた文字列を検出して警告
+  "i18n-ally.extract.autoDetect": true,
+
+  // 探索ノイズを減らす
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/dist": true,
+    "**/build": true
+  },
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.next/**": true
+  },
+
+  // ④ の状態メモ: reference/legacy-java は「読む」専用。まだ Next.js へ変換しない。
+  "files.readonlyInclude": {
+    "reference/legacy-java/**": true
+  }
+}
