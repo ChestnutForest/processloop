@@ -1,16 +1,101 @@
 ﻿processloop
-Copyright (C) 2026 <あなた/組織名>
+Copyright (C) 2026 Kazuyuki Kuribayashi
 
-This product is a derivative work based on Process Dashboard,
-licensed under the GNU General Public License, version 3.
+================================================================================
+DERIVATION AND ATTRIBUTION
+================================================================================
 
-Original: https://www.processdash.com/
-Changes: 製品名の変更、および Java/Swing から Next.js への移植。
+This product is a derivative work based on:
 
-PSP, TSP, Personal Software Process, and Team Software Process are
-service marks of Carnegie Mellon University. This project is not
-affiliated with nor endorsed by Carnegie Mellon University.
+    Process Dashboard - Data Automation Tool for high-maturity processes
+    Copyright (C) 1998-2025 Tuma Solutions, LLC
+    https://www.processdash.com/
+    Source: https://github.com/dtuma/processdash
 
-The PSP/TSP scripts and forms modules bundled with the original
-Process Dashboard are subject to separate Carnegie Mellon University /
-SEI terms and are NOT included or ported here without separate handling.
+This program is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 3 of the License, or (at your option)
+any later version. See the LICENSE file for the full text.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.
+
+================================================================================
+ADDITIONAL PERMISSION UNDER GNU GPL VERSION 3 SECTION 7
+================================================================================
+
+The following additional permission was granted by the licensors of the
+original Process Dashboard and is preserved here verbatim:
+
+    If you modify this Program, or any covered work, by linking or
+    combining it with modules that have been produced, distributed or
+    approved by Tuma Solutions, LLC (regardless of the license terms of
+    those modules), the licensors of this Program grant you additional
+    permission to convey the resulting work.
+
+The original author(s) may be contacted at:
+
+    Tuma Solutions, LLC
+    5648 Fox Chase Drive
+    Ogden, UT 84403
+
+    processdash@tuma-solutions.com
+    processdash-devel@lists.sourceforge.net
+
+================================================================================
+CHANGES MADE IN THIS DERIVATIVE WORK
+================================================================================
+
+(Required by GNU GPL version 3, section 5a: modified works must carry
+prominent notices stating that they were changed, and the date of change.)
+
+    2026-07  Renamed the product from "Process Dashboard" to "processloop".
+    2026-07  Began porting the application from Java/Swing (desktop) to
+             Next.js (web). Source conversion not yet performed at the time
+             of this writing.
+    2026-07  Restructured internationalization resources from Java
+             .properties files to JSON message catalogs, targeting English
+             (en) and Japanese (ja).
+
+================================================================================
+SERVICE MARKS
+================================================================================
+
+PSP, TSP, Personal Software Process, and Team Software Process are service
+marks of Carnegie Mellon University. This project is NOT affiliated with,
+sponsored by, nor endorsed by Carnegie Mellon University or its Software
+Engineering Institute.
+
+These marks are referenced in this project only descriptively, to identify
+the software process methodologies that the original Process Dashboard was
+designed to support. They are not used as, or as part of, the name or brand
+of this product.
+
+================================================================================
+SCOPE OF PORTED MATERIAL
+================================================================================
+
+This derivative work is based solely on the open-source Process Dashboard
+codebase distributed under GPLv3 at https://github.com/dtuma/processdash.
+
+The PSP/TSP process materials (scripts, forms, and course content) that
+Carnegie Mellon University distributes under separate special permission
+are NOT part of that GPLv3 source tree, and are NOT included or ported
+here. Those materials are distributed separately by CMU/SEI and remain
+subject to their own terms.
+
+Should any PSP/TSP process content be required in the future, it must be
+sourced either (a) from materials licensed under Creative Commons
+Attribution 4.0 International, with appropriate attribution, or (b) under
+separate written permission from the SEI.
+
+================================================================================
+THIRD-PARTY COMPONENTS
+================================================================================
+
+The original Process Dashboard bundles third-party libraries under their
+own licenses. As this port replaces the Java runtime with a JavaScript /
+Node.js stack, those libraries are not carried over directly. Any
+replacement dependency must be verified for license compatibility with
+GPLv3 before adoption.
