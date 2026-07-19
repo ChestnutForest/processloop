@@ -1,10 +1,11 @@
-﻿# deps / build
+# deps / build
 node_modules/
 .next/
 dist/
 build/
 out/
 coverage/
+*.tsbuildinfo
 
 # env / secrets
 .env
@@ -15,3 +16,7 @@ coverage/
 *.log
 .DS_Store
 Thumbs.db
+
+# 移植元 Java（141MB・ローカル参照のみ。リポジトリには含めない）
+reference/legacy-java/*
+!reference/legacy-java/README.md
