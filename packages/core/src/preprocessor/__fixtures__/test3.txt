@@ -1,0 +1,4 @@
+#define FOO 42
+[A] = FOO;
+#undef FOO
+[B] = FOO;

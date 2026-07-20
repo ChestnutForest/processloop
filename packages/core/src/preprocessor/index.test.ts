@@ -17,6 +17,10 @@ describe('ゴールデンファイルとの一致', () => {
   it('test2: 行継続を含む FOR_EACH_PHASE の展開', () => {
     expect(preprocess(fixture('test2.txt'))).toBe(fixture('test2.expected'));
   });
+
+  it('test3: #undef で定義が取り消される', () => {
+    expect(preprocess(fixture('test3.txt'))).toBe(fixture('test3.expected'));
+  });
 });
 
 describe('#define', () => {
