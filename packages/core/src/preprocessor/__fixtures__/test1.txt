@@ -1,0 +1,13 @@
+/* -*- mode:c -*- */
+#define double(x) [x] * 2
+#define PROCESS_HAS_SIZE
+[A] = 1;
+[B] = double(A);
+#ifdef PROCESS_HAS_SIZE
+[Size] = 100;
+#else
+[Size] = 0;
+#endif
+#ifndef PROCESS_HAS_DEFECTS
+[NoDefects] = 1;
+#endif

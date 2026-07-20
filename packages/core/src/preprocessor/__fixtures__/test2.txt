@@ -1,0 +1,7 @@
+#define FOR_EACH_PHASE(macro)   \
+    macro(Planning)             \
+    macro(Design)               \
+    macro(Code)                 \
+    macro(Test)
+#define estTime(Phase) [Phase/Estimated Time] = 0;
+FOR_EACH_PHASE(estTime)
