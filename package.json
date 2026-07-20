@@ -14,5 +14,11 @@
     "lint": "pnpm -r lint",
     "typecheck": "pnpm -r typecheck",
     "dev": "pnpm --filter frontend dev"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
   }
 }
