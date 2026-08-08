@@ -37,6 +37,7 @@ PSP、TSP、Personal Software Process、Team Software Process はカーネギー
 | A-2 以降の移植単位 | 未着手 |
 | frontend | 未初期化 |
 | 開発プロセスの定義 | 議論中（[成果物提案](docs/deliverables-proposal.md) 参照） |
+| 実装順序 | 議論中（[ドッグフーディング案](docs/dogfooding-roadmap.md) 参照） |
 
 第1期スコープは「個人利用の PSP 機能 ＋ PROBE ＋ EV」で、実装見積りは 7,200〜9,800行。
 18ユニットのうち1つが完了している。
@@ -54,6 +55,7 @@ processloop/
 ├─ docs/                 設計・移植メモ
 │   ├─ architecture-analysis.md   移植元のプログラム構造 解析報告
 │   ├─ deliverables-proposal.md   フェーズ別 成果物提案（議論中）
+│   ├─ dogfooding-roadmap.md      実装順序の変更提案（議論中）
 │   └─ history/                   開発経緯の記録
 │       └─ prompt-history.md      全プロンプト・回答の時系列一覧
 ├─ reference/legacy-java/ 移植元 Java の参照資料（Git 追跡対象外）
@@ -163,6 +165,21 @@ PROBE、EV計算、EVレポート、永続化層、Templates変換の10ユニッ
 
 移植プロジェクトでは要求の源泉が移植元の挙動になるため、全工程の上流に解析が入る。
 
+### 実装順序（議論中）
+
+18ユニットをどの順で実装するかは検討中である。2案がある。
+
+| 案 | 最初に作るもの | ドッグフーディング開始 |
+|---|---|---|
+| 計算エンジン先行 | A群7ユニット | 第1期の終盤 |
+| **データ収集先行** | 時間ログと最小UI | **約2,150行の時点** |
+
+後者は、この移植プロジェクト自体を PSP で計測することを狙う。PROBE は過去の
+「見積り規模 vs 実績規模」に回帰分析をかける手法であり、履歴データがないと検証できない。
+詳細は [docs/dogfooding-roadmap.md](docs/dogfooding-roadmap.md) を参照。
+
+どちらの案でも総実装量は変わらず、作業を捨てることもない。
+
 ---
 
 ## ロードマップ
@@ -185,6 +202,7 @@ PROBE、EV計算、EVレポート、永続化層、Templates変換の10ユニッ
 |---|---|
 | [docs/architecture-analysis.md](docs/architecture-analysis.md) | 移植元のプログラム構造の解析。計算式エンジンの5層構造、永続化の4系統、ライセンス構造、調査カバレッジ |
 | [docs/deliverables-proposal.md](docs/deliverables-proposal.md) | **議論中。** フェーズごとに作成するドキュメント・コード・リソースの提案。18ユニットの定義、工程ゲート、トレーサビリティマトリクスの構造 |
+| [docs/dogfooding-roadmap.md](docs/dogfooding-roadmap.md) | **議論中。** 実装順序をデータ収集先行に変える提案。この移植プロジェクト自体を PSP で計測し、PROBE の履歴データを蓄積する狙い |
 | [docs/history/prompt-history.md](docs/history/prompt-history.md) | 開発経緯の時系列記録 |
 | [reference/legacy-java/README.md](reference/legacy-java/README.md) | 移植元の取り扱い、上流ピン、ゴールデンファイル生成手順 |
 | [NOTICE](NOTICE) | 帰属、追加許諾、変更履歴、サービスマーク |
