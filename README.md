@@ -1,23 +1,168 @@
-﻿# processloop
+# Processloop
 
-Process Dashboard (GPLv3) を基にした派生プロジェクト。Java/Swing 版を Next.js 環境へ移植する。
+Process Dashboard（GPLv3）のフォークを、Java/Swing から Next.js へ移植するプロジェクト。
+英語・日本語の多言語対応を行う。
 
-**名前の由来**: process(計画→計測→実装→テスト→リリース→運用→改善) + loop(改善のループを回す)
+移植元: https://github.com/dtuma/processdash
+上流ピン: `bf5a4d63aff08410f79840001c816b37392e5001`（Process Dashboard 2.7.6、2026-05-28）
 
-## ライセンス / 帰属
+---
 
-- 本プロジェクトは GPLv3 の Process Dashboard (https://www.processdash.com/) を基にした派生物であり、GPLv3 で提供する。
-- PSP / TSP はカーネギーメロン大学のサービスマーク。本プロジェクトは CMU と非提携・非公認。
-- 詳細は NOTICE を参照。
+## ライセンス
 
-## 構成
+本プロジェクトは **GNU General Public License version 3 以降** で提供される。
 
-- frontend/ : Next.js アプリ (UI) ※未初期化
-- backend/ : API サービス ※未初期化
-- i18n/ : 多言語対応 (en / ja)。messages/ が翻訳リソース、starter/ が設定雛形
-- docs/ : 設計・移植メモ。history/ に開発経緯の記録（プロンプト履歴・日次ログ）
-- reference/legacy-java/ : 移植元 Java の参照専用 ※まだ変換しない
+- 全文は [LICENSE](LICENSE) を参照
+- 帰属、GPLv3 セクション7の追加許諾、変更履歴、サービスマークの扱いは [NOTICE](NOTICE) を参照
 
-## 状態
+移植元の著作権は Copyright (C) 1998-2025 Tuma Solutions, LLC に帰属する。
 
-初期準備フェーズ。Java→Next.js のソース変換は未実施。
+### サービスマークについて
+
+PSP、TSP、Personal Software Process、Team Software Process はカーネギーメロン大学のサービスマークである。
+本プロジェクトは同大学およびソフトウェア工学研究所とは提携していない。
+これらの名称は方法論を指す記述的用法としてのみ使用し、製品名やブランドとしては使用しない。
+
+---
+
+## 現在の状態
+
+**移植の実装フェーズ。計算式エンジンの第1層が完成している。**
+
+| 項目 | 状態 |
+|---|---|
+| 移植着手前の調査 | 完了（構造調査 33.7%、主要な設計判断はすべて確定） |
+| 開発環境 | 完了（Node 24 / pnpm ワークスペース / Vitest） |
+| ステージ0-a（プリプロセッサ） | **完了**（TypeScript 315行、テスト22件） |
+| ステージ0-b 以降 | 未着手 |
+| frontend | 未初期化 |
+
+第1期スコープは「個人利用の PSP 機能 ＋ PROBE ＋ EV」で、実装見積りは 7,200〜9,800行。
+
+---
+
+## リポジトリ構成
+
+```
+processloop/
+├─ packages/core/        UI 非依存のドメインロジック（移植の主戦場）
+│   └─ src/preprocessor/ ステージ0-a: プリプロセッサ（実装済み）
+├─ frontend/             Next.js アプリケーション（未初期化）
+├─ i18n/                 多言語メッセージ（en / ja）
+├─ docs/                 設計・移植メモ
+│   ├─ architecture-analysis.md  移植元のプログラム構造 解析報告
+│   └─ history/                  開発経緯の記録
+│       └─ prompt-history.md     全プロンプト・回答の時系列一覧
+├─ reference/legacy-java/ 移植元 Java の参照資料（Git 追跡対象外）
+│   └─ README.md          上流ピン・取り扱い原則・ライセンス注意
+├─ LICENSE                GPLv3 全文
+├─ NOTICE                 帰属・追加許諾・サービスマーク
+└─ package.json           pnpm ワークスペースのルート
+```
+
+### `packages/core` を分離している理由
+
+移植元の `data` パッケージは171ファイル中1ファイルしか Swing に依存しておらず（0.6%）、
+ロジックと UI が既に分離されている。その構造を保つことで、テストが書きやすく、
+将来チーム機能で負荷が増えたら独立サーバへ切り出す選択肢も残せる。
+
+### `reference/legacy-java` について
+
+移植元の Java ソースを置く場所。**`README.md` を除いて Git の追跡対象外**である。
+上流全体は141MB あるため、リポジトリには含めず、コミットSHA の記録で再現性を確保している。
+
+---
+
+## 開発環境
+
+| 項目 | バージョン |
+|---|---|
+| Node.js | 24（`.nvmrc` で指定） |
+| pnpm | 10.15.0（`packageManager` で固定） |
+| TypeScript | strict ＋ `noUncheckedIndexedAccess` |
+| テスト | Vitest |
+| JDK | 11 以上（ゴールデンファイル生成に使用） |
+
+### セットアップ
+
+```bash
+pnpm install
+pnpm typecheck
+pnpm test
+```
+
+### 主なスクリプト
+
+| コマンド | 内容 |
+|---|---|
+| `pnpm build` | 全ワークスペースのビルド |
+| `pnpm test` | 全ワークスペースのテスト |
+| `pnpm typecheck` | 型チェック |
+| `pnpm lint` | 静的解析 |
+| `pnpm dev` | frontend の開発サーバ（未初期化のため現時点では使用不可） |
+
+---
+
+## 移植の進め方
+
+### 検証方法：ゴールデンファイル
+
+移植元の `data` パッケージにはテストが1件も存在しない。
+そこで**元の Java 実装を実際に動かし、その出力を正解データとする**方式を採用している。
+
+```
+packages/core/src/preprocessor/__fixtures__/
+├─ test1.txt / test1.expected    関数マクロと条件分岐
+├─ test2.txt / test2.expected    行継続を含むマクロ展開
+└─ test3.txt / test3.expected    #undef による定義の取り消し
+```
+
+生成手順は [reference/legacy-java/README.md](reference/legacy-java/README.md) を参照。
+`CppFilter` は6ファイルのみでコンパイルでき、ant によるフルビルドは不要である。
+
+### 実装ステージ
+
+| ステージ | 内容 | 状態 |
+|---|---|---|
+| 0-a | プリプロセッサ | ✅ 完了 |
+| 0-b | 動的マクロ生成 | 未着手 |
+| 1 | 値の型システム | 未着手 |
+| 2 | パーサ（Peggy） | 未着手 |
+| 3 | 評価器 | 未着手 |
+| 4 | 組み込み関数 | 未着手 |
+| 5 | DataRepository | 未着手 |
+
+計算式エンジンの構造と各ステージの詳細は
+[docs/architecture-analysis.md](docs/architecture-analysis.md) を参照。
+
+---
+
+## ロードマップ
+
+| 期 | 内容 | 実装規模 |
+|---|---|---|
+| **第1期** | 個人の PSP 機能（計測・改善）＋ PROBE ＋ EV | 7,200〜9,800行 |
+| 第1.5期 | 実用性の底上げ（データ移行、確率的予測など） | 2,000〜3,000行 |
+| 第2期 | 汎用チームプロセス機能 | 8,000〜12,000行 |
+| 第3期 | 高度なチーム機能 | 5,000行〜 |
+
+第2期を「TSP」と呼ばないのは、上流の GPLv3 ソースに TSP のプロセス定義が存在せず、
+汎用のカスタムプロセス生成機構のみが提供されているためである。詳細は解析報告を参照。
+
+---
+
+## ドキュメント
+
+| 文書 | 内容 |
+|---|---|
+| [docs/architecture-analysis.md](docs/architecture-analysis.md) | 移植元のプログラム構造の解析。計算式エンジンの5層構造、永続化の4系統、ライセンス構造、調査カバレッジ |
+| [docs/history/prompt-history.md](docs/history/prompt-history.md) | 開発経緯の時系列記録 |
+| [reference/legacy-java/README.md](reference/legacy-java/README.md) | 移植元の取り扱い、上流ピン、ゴールデンファイル生成手順 |
+| [NOTICE](NOTICE) | 帰属、追加許諾、変更履歴、サービスマーク |
+
+---
+
+## 貢献について
+
+現時点では個人プロジェクトとして進めている。
+GPLv3 の条件のもと、フォークや改変は自由に行える。
