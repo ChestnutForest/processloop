@@ -34,13 +34,13 @@ PSP、TSP、Personal Software Process、Team Software Process はカーネギー
 | 移植着手前の調査 | 完了（構造調査 33.7%、主要な設計判断はすべて確定） |
 | 開発環境 | 完了（Node 24 / pnpm ワークスペース / Vitest） |
 | **A-1（プリプロセッサ）** | **完了**（TypeScript 315行、テスト22件） |
-| A-2 以降の移植単位 | 未着手 |
-| frontend | 未初期化 |
+| M1（データ収集の最小構成） | 未着手（次の作業） |
+| frontend | 未初期化（M1 に含む） |
 | 開発プロセスの定義 | 議論中（[成果物提案](docs/deliverables-proposal.md) 参照） |
-| 実装順序 | 議論中（[ドッグフーディング案](docs/dogfooding-roadmap.md) 参照） |
+| 実装順序 | 確定（データ収集先行。[ADR-0001](docs/adr/adr-0001-data-collection-first.md)） |
 
-第1期スコープは「個人利用の PSP 機能 ＋ PROBE ＋ EV」で、実装見積りは 7,200〜9,800行。
-18ユニットのうち1つが完了している。
+第1期スコープは「個人利用の PSP 機能 ＋ PROBE ＋ EV」で、実装見積りは **19,000〜21,000行**（18ユニットの積み上げ）。
+現在1ユニットが完了している。
 
 ---
 
@@ -55,7 +55,10 @@ processloop/
 ├─ docs/                 設計・移植メモ
 │   ├─ architecture-analysis.md   移植元のプログラム構造 解析報告
 │   ├─ deliverables-proposal.md   フェーズ別 成果物提案（議論中）
-│   ├─ dogfooding-roadmap.md      実装順序の変更提案（議論中）
+│   ├─ dogfooding-roadmap.md      実装順序（M1〜M6）
+│   ├─ adr/                       アーキテクチャ決定記録
+│   │   └─ adr-0001-data-collection-first.md
+│   ├─ psp-data/                  この開発自体の PSP 計測データ
 │   └─ history/                   開発経緯の記録
 │       └─ prompt-history.md      全プロンプト・回答の時系列一覧
 ├─ reference/legacy-java/ 移植元 Java の参照資料（Git 追跡対象外）
@@ -165,20 +168,26 @@ PROBE、EV計算、EVレポート、永続化層、Templates変換の10ユニッ
 
 移植プロジェクトでは要求の源泉が移植元の挙動になるため、全工程の上流に解析が入る。
 
-### 実装順序（議論中）
+### 実装順序
 
-18ユニットをどの順で実装するかは検討中である。2案がある。
+**データ収集先行**とする（2026-07-20 決定）。18ユニットを6マイルストーンで進める。
 
-| 案 | 最初に作るもの | ドッグフーディング開始 |
-|---|---|---|
-| 計算エンジン先行 | A群7ユニット | 第1期の終盤 |
-| **データ収集先行** | 時間ログと最小UI | **約2,150行の時点** |
+| M | 内容 | 規模 | 到達点 |
+|---|---|---|---|
+| **M1** | 永続化・階層・時間ログ・最小UI | 約2,650行 | **時間を記録できる** |
+| M2 | 欠陥ログ | 約1,000行 | PSP の3大生データが揃う |
+| M3 | 計算エンジン | 約8,700行 | 派生指標が自動計算される |
+| M4 | PROBE | 約1,200行 | 蓄積データで見積もれる |
+| M5 | EV | 約3,000行 | 計画対実績・完了予測 |
+| M6 | 仕上げ・デプロイ | 約2,000行 | 第1期完了 |
 
-後者は、この移植プロジェクト自体を PSP で計測することを狙う。PROBE は過去の
-「見積り規模 vs 実績規模」に回帰分析をかける手法であり、履歴データがないと検証できない。
+計算エンジンを後回しにできるのは、**生データの記録がエンジンから独立している**ためである。
+この順序により、M1 の時点からこの移植プロジェクト自体を PSP で計測できる。
+PROBE は過去の「見積り規模 vs 実績規模」に回帰分析をかける手法であり、
+履歴データがなければ検証できない。
+
+決定の経緯は [docs/adr/adr-0001-data-collection-first.md](docs/adr/adr-0001-data-collection-first.md)、
 詳細は [docs/dogfooding-roadmap.md](docs/dogfooding-roadmap.md) を参照。
-
-どちらの案でも総実装量は変わらず、作業を捨てることもない。
 
 ---
 
@@ -186,7 +195,7 @@ PROBE、EV計算、EVレポート、永続化層、Templates変換の10ユニッ
 
 | 期 | 内容 | 実装規模 |
 |---|---|---|
-| **第1期** | 個人の PSP 機能（計測・改善）＋ PROBE ＋ EV | 7,200〜9,800行 |
+| **第1期** | 個人の PSP 機能（計測・改善）＋ PROBE ＋ EV | 19,000〜21,000行 |
 | 第1.5期 | 実用性の底上げ（データ移行、確率的予測など） | 2,000〜3,000行 |
 | 第2期 | 汎用チームプロセス機能 | 8,000〜12,000行 |
 | 第3期 | 高度なチーム機能 | 5,000行〜 |
@@ -202,7 +211,8 @@ PROBE、EV計算、EVレポート、永続化層、Templates変換の10ユニッ
 |---|---|
 | [docs/architecture-analysis.md](docs/architecture-analysis.md) | 移植元のプログラム構造の解析。計算式エンジンの5層構造、永続化の4系統、ライセンス構造、調査カバレッジ |
 | [docs/deliverables-proposal.md](docs/deliverables-proposal.md) | **議論中。** フェーズごとに作成するドキュメント・コード・リソースの提案。18ユニットの定義、工程ゲート、トレーサビリティマトリクスの構造 |
-| [docs/dogfooding-roadmap.md](docs/dogfooding-roadmap.md) | **議論中。** 実装順序をデータ収集先行に変える提案。この移植プロジェクト自体を PSP で計測し、PROBE の履歴データを蓄積する狙い |
+| [docs/dogfooding-roadmap.md](docs/dogfooding-roadmap.md) | 実装順序（確定）。M1〜M6 の内容、手動記録の様式、開発工程と PSP フェーズの対応 |
+| [docs/adr/](docs/adr/) | アーキテクチャ決定記録。背景・決定・検討した代替案・影響を残す |
 | [docs/history/prompt-history.md](docs/history/prompt-history.md) | 開発経緯の時系列記録 |
 | [reference/legacy-java/README.md](reference/legacy-java/README.md) | 移植元の取り扱い、上流ピン、ゴールデンファイル生成手順 |
 | [NOTICE](NOTICE) | 帰属、追加許諾、変更履歴、サービスマーク |
