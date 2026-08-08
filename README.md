@@ -33,11 +33,13 @@ PSP、TSP、Personal Software Process、Team Software Process はカーネギー
 |---|---|
 | 移植着手前の調査 | 完了（構造調査 33.7%、主要な設計判断はすべて確定） |
 | 開発環境 | 完了（Node 24 / pnpm ワークスペース / Vitest） |
-| ステージ0-a（プリプロセッサ） | **完了**（TypeScript 315行、テスト22件） |
-| ステージ0-b 以降 | 未着手 |
+| **A-1（プリプロセッサ）** | **完了**（TypeScript 315行、テスト22件） |
+| A-2 以降の移植単位 | 未着手 |
 | frontend | 未初期化 |
+| 開発プロセスの定義 | 議論中（[成果物提案](docs/deliverables-proposal.md) 参照） |
 
 第1期スコープは「個人利用の PSP 機能 ＋ PROBE ＋ EV」で、実装見積りは 7,200〜9,800行。
+18ユニットのうち1つが完了している。
 
 ---
 
@@ -46,13 +48,14 @@ PSP、TSP、Personal Software Process、Team Software Process はカーネギー
 ```
 processloop/
 ├─ packages/core/        UI 非依存のドメインロジック（移植の主戦場）
-│   └─ src/preprocessor/ ステージ0-a: プリプロセッサ（実装済み）
+│   └─ src/preprocessor/ A-1: プリプロセッサ（実装済み）
 ├─ frontend/             Next.js アプリケーション（未初期化）
 ├─ i18n/                 多言語メッセージ（en / ja）
 ├─ docs/                 設計・移植メモ
-│   ├─ architecture-analysis.md  移植元のプログラム構造 解析報告
-│   └─ history/                  開発経緯の記録
-│       └─ prompt-history.md     全プロンプト・回答の時系列一覧
+│   ├─ architecture-analysis.md   移植元のプログラム構造 解析報告
+│   ├─ deliverables-proposal.md   フェーズ別 成果物提案（議論中）
+│   └─ history/                   開発経緯の記録
+│       └─ prompt-history.md      全プロンプト・回答の時系列一覧
 ├─ reference/legacy-java/ 移植元 Java の参照資料（Git 追跡対象外）
 │   └─ README.md          上流ピン・取り扱い原則・ライセンス注意
 ├─ LICENSE                GPLv3 全文
@@ -120,20 +123,45 @@ packages/core/src/preprocessor/__fixtures__/
 生成手順は [reference/legacy-java/README.md](reference/legacy-java/README.md) を参照。
 `CppFilter` は6ファイルのみでコンパイルでき、ant によるフルビルドは不要である。
 
-### 実装ステージ
+### 移植単位
 
-| ステージ | 内容 | 状態 |
-|---|---|---|
-| 0-a | プリプロセッサ | ✅ 完了 |
-| 0-b | 動的マクロ生成 | 未着手 |
-| 1 | 値の型システム | 未着手 |
-| 2 | パーサ（Peggy） | 未着手 |
-| 3 | 評価器 | 未着手 |
-| 4 | 組み込み関数 | 未着手 |
-| 5 | DataRepository | 未着手 |
+第1期の移植対象を18ユニットに分けている（A群7・B群10・C群1）。
 
-計算式エンジンの構造と各ステージの詳細は
-[docs/architecture-analysis.md](docs/architecture-analysis.md) を参照。
+**A群：計算式エンジン**
+
+| ID | 内容 | 移植元 | 状態 |
+|---|---|---|---|
+| A-1 | プリプロセッサ | `util/CppFilter.java` | ✅ 完了 |
+| A-2 | 動的マクロ生成 | `process/TemplateAutoData.java` | 未着手 |
+| A-3 | 値の型システム | `data` 直下 | 未着手 |
+| A-4 | パーサ（Peggy） | `data/compiler/grammar.txt` | 未着手 |
+| A-5 | 評価器 | `data/compiler` | 未着手 |
+| A-6 | 組み込み関数 | `compiler/function` | 未着手 |
+| A-7 | DataRepository | `data/repository` | 未着手 |
+
+**B群：機能モジュール**（util、hier、process/templates、時間ログ、欠陥ログ、
+PROBE、EV計算、EVレポート、永続化層、Templates変換の10ユニット）
+
+**C群：画面**（階層・タイマー・欠陥ログ・PROBE・サマリの5画面で1ユニット）
+
+計算式エンジンの構造は [docs/architecture-analysis.md](docs/architecture-analysis.md)、
+ユニットの内訳と成果物の定義は
+[docs/deliverables-proposal.md](docs/deliverables-proposal.md) を参照。
+
+---
+
+### 開発プロセス（議論中）
+
+工程と成果物の対応、トレーサビリティマトリクスによる進捗管理の方式を検討している。
+現時点の案は [docs/deliverables-proposal.md](docs/deliverables-proposal.md) にまとめており、
+確定前のため未決事項を含む。
+
+```
+移植元の解析 → 要求定義 → アーキテクチャ設計 → プログラム設計 → 実装
+             → 単体テスト → 結合テスト → 総合テスト → デプロイ
+```
+
+移植プロジェクトでは要求の源泉が移植元の挙動になるため、全工程の上流に解析が入る。
 
 ---
 
@@ -156,6 +184,7 @@ packages/core/src/preprocessor/__fixtures__/
 | 文書 | 内容 |
 |---|---|
 | [docs/architecture-analysis.md](docs/architecture-analysis.md) | 移植元のプログラム構造の解析。計算式エンジンの5層構造、永続化の4系統、ライセンス構造、調査カバレッジ |
+| [docs/deliverables-proposal.md](docs/deliverables-proposal.md) | **議論中。** フェーズごとに作成するドキュメント・コード・リソースの提案。18ユニットの定義、工程ゲート、トレーサビリティマトリクスの構造 |
 | [docs/history/prompt-history.md](docs/history/prompt-history.md) | 開発経緯の時系列記録 |
 | [reference/legacy-java/README.md](reference/legacy-java/README.md) | 移植元の取り扱い、上流ピン、ゴールデンファイル生成手順 |
 | [NOTICE](NOTICE) | 帰属、追加許諾、変更履歴、サービスマーク |
