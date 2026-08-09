@@ -221,5 +221,6 @@ M3 でそのまま使える。保留になるだけで無駄にはならない�
 | 文書 | 関係 |
 |---|---|
 | [dogfooding-roadmap.md](../dogfooding-roadmap.md) | 本決定にもとづく M1〜M6 の詳細 |
+| [adr-0002-measurement-recording.md](adr-0002-measurement-recording.md) | 本 ADR に併記した手動記録の方針を、後に見直した決定 |
 | [deliverables-proposal.md](../deliverables-proposal.md) | 18ユニットの定義と成果物。第3章が本決定で置き換わる |
 | [architecture-analysis.md](../architecture-analysis.md) | 順序変更を可能にした構造的事実の根拠 |

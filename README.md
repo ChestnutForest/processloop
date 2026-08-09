@@ -38,6 +38,7 @@ PSP、TSP、Personal Software Process、Team Software Process はカーネギー
 | frontend | 未初期化（M1 に含む） |
 | 開発プロセスの定義 | 議論中（[成果物提案](docs/deliverables-proposal.md) 参照） |
 | 実装順序 | 確定（データ収集先行。[ADR-0001](docs/adr/adr-0001-data-collection-first.md)） |
+| PSP 計測データ | A-1 を遡及登録済み。以降は M1 完成後に記録（[ADR-0002](docs/adr/adr-0002-measurement-recording.md)） |
 
 第1期スコープは「個人利用の PSP 機能 ＋ PROBE ＋ EV」で、実装見積りは **19,000〜21,000行**（18ユニットの積み上げ）。
 現在1ユニットが完了している。
@@ -57,8 +58,12 @@ processloop/
 │   ├─ deliverables-proposal.md   フェーズ別 成果物提案（議論中）
 │   ├─ dogfooding-roadmap.md      実装順序（M1〜M6）
 │   ├─ adr/                       アーキテクチャ決定記録
-│   │   └─ adr-0001-data-collection-first.md
+│   │   ├─ adr-0001-data-collection-first.md
+│   │   └─ adr-0002-measurement-recording.md
 │   ├─ psp-data/                  この開発自体の PSP 計測データ
+│   │   ├─ size-log.csv           成果物規模（PROBE の入力）
+│   │   ├─ defect-log.csv         欠陥（混入・発見・分類）
+│   │   └─ time-log.csv           作業時間（M1 完成後に記録開始）
 │   └─ history/                   開発経緯の記録
 │       └─ prompt-history.md      全プロンプト・回答の時系列一覧
 ├─ reference/legacy-java/ 移植元 Java の参照資料（Git 追跡対象外）
@@ -213,6 +218,7 @@ PROBE は過去の「見積り規模 vs 実績規模」に回帰分析をかけ�
 | [docs/deliverables-proposal.md](docs/deliverables-proposal.md) | **議論中。** フェーズごとに作成するドキュメント・コード・リソースの提案。18ユニットの定義、工程ゲート、トレーサビリティマトリクスの構造 |
 | [docs/dogfooding-roadmap.md](docs/dogfooding-roadmap.md) | 実装順序（確定）。M1〜M6 の内容、手動記録の様式、開発工程と PSP フェーズの対応 |
 | [docs/adr/](docs/adr/) | アーキテクチャ決定記録。背景・決定・検討した代替案・影響を残す |
+| [docs/psp-data/](docs/psp-data/) | この開発自体の PSP 計測データ。規模・欠陥・作業時間。完成後に Processloop へ投入する |
 | [docs/history/prompt-history.md](docs/history/prompt-history.md) | 開発経緯の時系列記録 |
 | [reference/legacy-java/README.md](reference/legacy-java/README.md) | 移植元の取り扱い、上流ピン、ゴールデンファイル生成手順 |
 | [NOTICE](NOTICE) | 帰属、追加許諾、変更履歴、サービスマーク |

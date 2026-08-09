@@ -1,0 +1,2 @@
+unit,estimated_loc,actual_loc,est_date,complete_date,note
+A-1,300,315,2026-07-19,2026-07-20,見積りは250〜350行の範囲。中央値300を採用

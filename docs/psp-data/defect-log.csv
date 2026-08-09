@@ -1,0 +1,5 @@
+unit,found_phase,injected_phase,type,fix_min,description
+A-1,単体テスト,実装,80 Function,,BOM付きUTF-8の入力でディレクティブが認識されず誤ったゴールデンを生成した
+A-1,実装,実装,100 Environment,,@types/node が実行環境のNode 24と不一致（26系が入った）
+A-1,実装,実装,20 Syntax,,package.jsonにトップレベルのオブジェクトを2つ並べJSON構文エラーになった
+A-1,実装,設計,50 Interface,,workディレクトリからの相対パスの階層数を誤り DirectoryNotFoundException が発生した
