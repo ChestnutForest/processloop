@@ -59,7 +59,8 @@ processloop/
 │   │   ├─ README.md              記法と ID 体系の定義
 │   │   ├─ _template.md           新規作成の雛形
 │   │   ├─ _schema/               Front Matter の JSON Schema
-│   │   └─ fr-time-001.md         要求の実例
+│   │   ├─ fr-time-001.md         要求の実例
+│   │   └─ ipa-integration-proposal.md  IPA ガイド統合の提案（議論中）
 │   ├─ architecture-analysis.md   移植元のプログラム構造 解析報告
 │   ├─ deliverables-proposal.md   フェーズ別 成果物提案（議論中）
 │   ├─ dogfooding-roadmap.md      実装順序（M1〜M6）
@@ -184,6 +185,10 @@ PROBE、EV計算、EVレポート、永続化層、Templates変換の10ユニッ
 Excel を前提とする USDM の様式を、Markdown + YAML Front Matter に写している。
 記法と ID 体系は [docs/phase1/req/README.md](docs/phase1/req/README.md) を参照。
 
+あわせて、IPA「機能要件の合意形成ガイド」（2010）が定める6技術領域を
+網羅性の軸として USDM に取り込む案を検討している。
+詳細は [ipa-integration-proposal.md](docs/phase1/req/ipa-integration-proposal.md) を参照。
+
 ### 実装順序
 
 **データ収集先行**とする（2026-07-20 決定）。18ユニットを6マイルストーンで進める。
@@ -226,6 +231,7 @@ PROBE は過去の「見積り規模 vs 実績規模」に回帰分析をかけ�
 | 文書 | 内容 |
 |---|---|
 | [docs/phase1/req/README.md](docs/phase1/req/README.md) | 要求仕様の記法（USDM）。ID 体系、Front Matter の項目、要求と仕様の書き方、避けるべき表現 |
+| [docs/phase1/req/ipa-integration-proposal.md](docs/phase1/req/ipa-integration-proposal.md) | **議論中。** IPA「機能要件の合意形成ガイド」の6技術領域を USDM に統合する提案。網羅性の検証、合意成熟度との対応 |
 | [docs/architecture-analysis.md](docs/architecture-analysis.md) | 移植元のプログラム構造の解析。計算式エンジンの5層構造、永続化の4系統、ライセンス構造、調査カバレッジ |
 | [docs/deliverables-proposal.md](docs/deliverables-proposal.md) | **議論中。** フェーズごとに作成するドキュメント・コード・リソースの提案。18ユニットの定義、工程ゲート、トレーサビリティマトリクスの構造 |
 | [docs/dogfooding-roadmap.md](docs/dogfooding-roadmap.md) | 実装順序（確定）。M1〜M6 の内容、手動記録の様式、開発工程と PSP フェーズの対応 |

@@ -9,6 +9,10 @@ https://affordd.jp/previous/results.shtml
 
 本書は、Excel 表を前提とする USDM の様式を **Markdown + YAML Front Matter** に写す方法を定める。
 
+⚠️ **IPA のガイドとの統合を検討中である。** IPA「機能要件の合意形成ガイド」（2010）が定める
+6技術領域を網羅性の軸として取り込む案を [ipa-integration-proposal.md](ipa-integration-proposal.md)
+にまとめている。**未確定のため、本書には反映していない。**
+
 ---
 
 ## 1. なぜ Markdown + YAML Front Matter か
@@ -31,6 +35,7 @@ USDM の本質は表形式ではなく、**要求・理由・説明・仕様グ�
 ```
 docs/phase1/req/
 ├─ README.md                    本書
+├─ ipa-integration-proposal.md  IPA ガイド統合の提案（議論中）
 ├─ _template.md                 新規作成時の雛形
 ├─ _schema/
 │   └─ requirement.schema.json  Front Matter の検証スキーマ
@@ -132,7 +137,7 @@ test_refs:
 | `title` | ✅ | 要求の要約。**動詞形で終える** |
 | `type` | ✅ | `functional` / `non_functional` / `constraint` |
 | `priority` | ✅ | `must` / `should` / `could` / `wont` |
-| `status` | ✅ | `draft` / `reviewed` / `approved` / `obsolete` |
+| `status` | ✅ | `draft` / `reviewed` / `approved` / `obsolete`（IPA の合意成熟度との対応を検討中） |
 | `parent` | ✅ | 上位要求の ID。最上位なら `null` |
 | `children` | ✅ | 下位要求の ID の配列。無ければ空配列 |
 | `unit` | ✅ | 対応する移植ユニット（A-1 〜 C） |
