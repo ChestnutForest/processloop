@@ -7,6 +7,10 @@ title: 要求の要約を動詞形で書く
 type: functional
 priority: must
 status: draft
+domains:            # IPA の6技術領域。該当なしは [none]
+  - behavior
+  - screen
+  - data_model
 parent: null
 children: []
 unit: B-0

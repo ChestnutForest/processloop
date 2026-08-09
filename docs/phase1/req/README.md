@@ -9,9 +9,9 @@ https://affordd.jp/previous/results.shtml
 
 本書は、Excel 表を前提とする USDM の様式を **Markdown + YAML Front Matter** に写す方法を定める。
 
-⚠️ **IPA のガイドとの統合を検討中である。** IPA「機能要件の合意形成ガイド」（2010）が定める
-6技術領域を網羅性の軸として取り込む案を [ipa-integration-proposal.md](ipa-integration-proposal.md)
-にまとめている。**未確定のため、本書には反映していない。**
+本書は **IPA「機能要件の合意形成ガイド」（2010）との統合を反映済み**である。
+同ガイドが定める6技術領域を網羅性の軸として取り込んでいる。
+統合の設計と決定の経緯は [ipa-integration-proposal.md](ipa-integration-proposal.md) を参照。
 
 ---
 
@@ -35,7 +35,9 @@ USDM の本質は表形式ではなく、**要求・理由・説明・仕様グ�
 ```
 docs/phase1/req/
 ├─ README.md                    本書
-├─ ipa-integration-proposal.md  IPA ガイド統合の提案（議論中）
+├─ overview.md                  概要編に相当（目的・範囲・用語・要求一覧）
+├─ review-checklist.md          レビュー観点30項目
+├─ ipa-integration-proposal.md  IPA ガイド統合の設計と経緯
 ├─ _template.md                 新規作成時の雛形
 ├─ _schema/
 │   └─ requirement.schema.json  Front Matter の検証スキーマ
@@ -137,7 +139,8 @@ test_refs:
 | `title` | ✅ | 要求の要約。**動詞形で終える** |
 | `type` | ✅ | `functional` / `non_functional` / `constraint` |
 | `priority` | ✅ | `must` / `should` / `could` / `wont` |
-| `status` | ✅ | `draft` / `reviewed` / `approved` / `obsolete`（IPA の合意成熟度との対応を検討中） |
+| `status` | ✅ | `draft` / `reviewed` / `approved` / `obsolete`（下記の合意成熟度に対応） |
+| `domains` | ✅ | IPA の6技術領域のうち本要求が触れるもの。該当なしは `[none]` |
 | `parent` | ✅ | 上位要求の ID。最上位なら `null` |
 | `children` | ✅ | 下位要求の ID の配列。無ければ空配列 |
 | `unit` | ✅ | 対応する移植ユニット（A-1 〜 C） |
@@ -145,6 +148,30 @@ test_refs:
 | `source` | ✅ | **移植元の根拠**（下記） |
 | `depends_on` | | 依存する他の要求の ID |
 | `test_refs` | | 対応するテストの ID |
+
+### `domains` と `status` — IPA ガイドとの接続
+
+`domains` は、IPA ガイドが定める6技術領域のうち本要求が触れるものを宣言する。
+USDM の仕様グループが**要求の動詞**から立つ縦の構造であるのに対し、
+`domains` は**記述漏れを検出する横の軸**として働く。
+
+```yaml
+domains:
+  - behavior      # システム振舞い
+  - screen        # 画面
+  - data_model    # データモデル
+  # external_if / batch / report / none
+```
+
+`status` は同ガイドの合意成熟度に対応する。
+
+| `status` | 合意成熟度 | 判定基準 |
+|---|---|---|
+| `draft` | 仕掛レベル | 要求の範囲と目的が書けた |
+| `reviewed` | 充実レベル | 仕様と図表が揃い、レビューを一巡した |
+| `approved` | 完成レベル | 抜けと曖昧さが解消し、実装に引き渡せる |
+
+移行時のチェックは [review-checklist.md](review-checklist.md) を使う。
 
 ### ★ `source` — 移植プロジェクト固有の項目
 

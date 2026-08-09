@@ -37,7 +37,7 @@ PSP、TSP、Personal Software Process、Team Software Process はカーネギー
 | M1（データ収集の最小構成） | 未着手（次の作業） |
 | frontend | 未初期化（M1 に含む） |
 | 開発プロセスの定義 | 議論中（[成果物提案](docs/deliverables-proposal.md) 参照） |
-| 要求仕様の記法 | 確定（USDM。[記法定義](docs/phase1/req/README.md)） |
+| 要求仕様の記法 | 確定（USDM ＋ IPA 6技術領域。[記法定義](docs/phase1/req/README.md)） |
 | 実装順序 | 確定（データ収集先行。[ADR-0001](docs/adr/adr-0001-data-collection-first.md)） |
 | PSP 計測データ | A-1 を遡及登録済み。以降は M1 完成後に記録（[ADR-0002](docs/adr/adr-0002-measurement-recording.md)） |
 
@@ -60,7 +60,8 @@ processloop/
 │   │   ├─ _template.md           新規作成の雛形
 │   │   ├─ _schema/               Front Matter の JSON Schema
 │   │   ├─ fr-time-001.md         要求の実例
-│   │   └─ ipa-integration-proposal.md  IPA ガイド統合の提案（議論中）
+│   │   ├─ review-checklist.md    レビュー観点30項目
+│   │   └─ ipa-integration-proposal.md  IPA ガイド統合の設計と経緯
 │   ├─ architecture-analysis.md   移植元のプログラム構造 解析報告
 │   ├─ deliverables-proposal.md   フェーズ別 成果物提案（議論中）
 │   ├─ dogfooding-roadmap.md      実装順序（M1〜M6）
@@ -186,7 +187,8 @@ Excel を前提とする USDM の様式を、Markdown + YAML Front Matter に写
 記法と ID 体系は [docs/phase1/req/README.md](docs/phase1/req/README.md) を参照。
 
 あわせて、IPA「機能要件の合意形成ガイド」（2010）が定める6技術領域を
-網羅性の軸として USDM に取り込む案を検討している。
+網羅性の軸として USDM に取り込んでいる。USDM が要求から仕様への縦の構造を与え、
+6技術領域が記述漏れを検出する横の軸として働く。
 詳細は [ipa-integration-proposal.md](docs/phase1/req/ipa-integration-proposal.md) を参照。
 
 ### 実装順序
@@ -231,7 +233,8 @@ PROBE は過去の「見積り規模 vs 実績規模」に回帰分析をかけ�
 | 文書 | 内容 |
 |---|---|
 | [docs/phase1/req/README.md](docs/phase1/req/README.md) | 要求仕様の記法（USDM）。ID 体系、Front Matter の項目、要求と仕様の書き方、避けるべき表現 |
-| [docs/phase1/req/ipa-integration-proposal.md](docs/phase1/req/ipa-integration-proposal.md) | **議論中。** IPA「機能要件の合意形成ガイド」の6技術領域を USDM に統合する提案。網羅性の検証、合意成熟度との対応 |
+| [docs/phase1/req/ipa-integration-proposal.md](docs/phase1/req/ipa-integration-proposal.md) | IPA「機能要件の合意形成ガイド」の6技術領域を USDM に統合した設計と、決定の経緯 |
+| [docs/phase1/req/review-checklist.md](docs/phase1/req/review-checklist.md) | 要求仕様のレビュー観点30項目。合意成熟度の移行時に使う |
 | [docs/architecture-analysis.md](docs/architecture-analysis.md) | 移植元のプログラム構造の解析。計算式エンジンの5層構造、永続化の4系統、ライセンス構造、調査カバレッジ |
 | [docs/deliverables-proposal.md](docs/deliverables-proposal.md) | **議論中。** フェーズごとに作成するドキュメント・コード・リソースの提案。18ユニットの定義、工程ゲート、トレーサビリティマトリクスの構造 |
 | [docs/dogfooding-roadmap.md](docs/dogfooding-roadmap.md) | 実装順序（確定）。M1〜M6 の内容、手動記録の様式、開発工程と PSP フェーズの対応 |

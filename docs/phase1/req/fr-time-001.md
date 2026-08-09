@@ -7,6 +7,10 @@ title: 作業時間を計測して時間ログに記録する
 type: functional
 priority: must
 status: draft
+domains:
+  - behavior
+  - screen
+  - data_model
 parent: null
 children: []
 unit: B-4
