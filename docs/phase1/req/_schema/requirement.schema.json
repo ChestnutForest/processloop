@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ChestnutForest/processloop/docs/phase1/req/_schema/requirement.schema.json",
+  "title": "Processloop 要求仕様 Front Matter",
+  "description": "USDM にもとづく要求仕様ファイルの YAML Front Matter を検証する",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "id",
+    "category",
+    "category_name",
+    "title",
+    "type",
+    "priority",
+    "status",
+    "parent",
+    "children",
+    "unit",
+    "spec_count",
+    "source"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "description": "本スキーマの版",
+      "type": "integer",
+      "const": 1
+    },
+    "id": {
+      "description": "要求 ID。全ファイルで一意",
+      "type": "string",
+      "pattern": "^(FR|NFR|CON)-[A-Z0-9]+-[0-9]{3}$"
+    },
+    "category": {
+      "description": "カテゴリ略号。USDM のカテゴリ名に対応する",
+      "type": "string",
+      "enum": [
+        "HIER",
+        "PROC",
+        "TIME",
+        "DEF",
+        "PROBE",
+        "EV",
+        "CALC",
+        "I18N",
+        "LICENSE"
+      ]
+    },
+    "category_name": {
+      "description": "カテゴリの日本語名",
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "description": "要求の要約。USDM の原則により動詞形で終える",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "type": {
+      "description": "要求の種別。id の接頭辞と対応させる",
+      "type": "string",
+      "enum": ["functional", "non_functional", "constraint"]
+    },
+    "priority": {
+      "description": "優先度",
+      "type": "string",
+      "enum": ["must", "should", "could", "wont"]
+    },
+    "status": {
+      "description": "状態",
+      "type": "string",
+      "enum": ["draft", "reviewed", "approved", "obsolete"]
+    },
+    "parent": {
+      "description": "上位要求の ID。最上位の要求では null",
+      "type": ["string", "null"],
+      "pattern": "^(FR|NFR|CON)-[A-Z0-9]+-[0-9]{3}$"
+    },
+    "children": {
+      "description": "下位要求の ID。要求を分割していなければ空配列",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(FR|NFR|CON)-[A-Z0-9]+-[0-9]{3}$"
+      },
+      "uniqueItems": true
+    },
+    "unit": {
+      "description": "対応する移植ユニット",
+      "type": "string",
+      "pattern": "^(A-[1-7]|B-([1-9]|10)|C)$"
+    },
+    "spec_count": {
+      "description": "本文に含まれる仕様の数。規模の代理指標として PSP 計測に用いる",
+      "type": "integer",
+      "minimum": 0
+    },
+    "source": {
+      "description": "移植元の根拠。移植では要求の源泉が移植元の挙動になる",
+      "type": "object",
+      "required": ["upstream_sha", "files"],
+      "additionalProperties": false,
+      "properties": {
+        "upstream_sha": {
+          "description": "移植元リポジトリのコミット SHA",
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "files": {
+          "description": "根拠となる移植元ファイルのパス",
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "analysis_refs": {
+          "description": "対応する解析ドキュメントの ID",
+          "type": "array",
+          "items": { "type": "string", "pattern": "^ANA-[A-Z0-9-]+$" }
+        }
+      }
+    },
+    "depends_on": {
+      "description": "依存する他の要求の ID",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(FR|NFR|CON)-[A-Z0-9]+-[0-9]{3}$"
+      },
+      "uniqueItems": true
+    },
+    "test_refs": {
+      "description": "対応するテストの ID",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(UT|IT|ST)-[A-Z0-9-]+$"
+      },
+      "uniqueItems": true
+    }
+  },
+  "allOf": [
+    {
+      "description": "id の接頭辞と type を一致させる",
+      "if": { "properties": { "type": { "const": "functional" } } },
+      "then": { "properties": { "id": { "pattern": "^FR-" } } }
+    },
+    {
+      "if": { "properties": { "type": { "const": "non_functional" } } },
+      "then": { "properties": { "id": { "pattern": "^NFR-" } } }
+    },
+    {
+      "if": { "properties": { "type": { "const": "constraint" } } },
+      "then": { "properties": { "id": { "pattern": "^CON-" } } }
+    }
+  ]
+}

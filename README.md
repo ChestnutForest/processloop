@@ -37,6 +37,7 @@ PSP、TSP、Personal Software Process、Team Software Process はカーネギー
 | M1（データ収集の最小構成） | 未着手（次の作業） |
 | frontend | 未初期化（M1 に含む） |
 | 開発プロセスの定義 | 議論中（[成果物提案](docs/deliverables-proposal.md) 参照） |
+| 要求仕様の記法 | 確定（USDM。[記法定義](docs/phase1/req/README.md)） |
 | 実装順序 | 確定（データ収集先行。[ADR-0001](docs/adr/adr-0001-data-collection-first.md)） |
 | PSP 計測データ | A-1 を遡及登録済み。以降は M1 完成後に記録（[ADR-0002](docs/adr/adr-0002-measurement-recording.md)） |
 
@@ -54,6 +55,11 @@ processloop/
 ├─ frontend/             Next.js アプリケーション（未初期化）
 ├─ i18n/                 多言語メッセージ（en / ja）
 ├─ docs/                 設計・移植メモ
+│   ├─ phase1/req/                要求仕様（USDM・1要求1ファイル）
+│   │   ├─ README.md              記法と ID 体系の定義
+│   │   ├─ _template.md           新規作成の雛形
+│   │   ├─ _schema/               Front Matter の JSON Schema
+│   │   └─ fr-time-001.md         要求の実例
 │   ├─ architecture-analysis.md   移植元のプログラム構造 解析報告
 │   ├─ deliverables-proposal.md   フェーズ別 成果物提案（議論中）
 │   ├─ dogfooding-roadmap.md      実装順序（M1〜M6）
@@ -173,6 +179,11 @@ PROBE、EV計算、EVレポート、永続化層、Templates変換の10ユニッ
 
 移植プロジェクトでは要求の源泉が移植元の挙動になるため、全工程の上流に解析が入る。
 
+要求仕様は **USDM**（Universal Specification Describing Manner）で記述する。
+要求・理由・説明・仕様グループ・仕様を階層構造で表し、要求には必ず理由を添える。
+Excel を前提とする USDM の様式を、Markdown + YAML Front Matter に写している。
+記法と ID 体系は [docs/phase1/req/README.md](docs/phase1/req/README.md) を参照。
+
 ### 実装順序
 
 **データ収集先行**とする（2026-07-20 決定）。18ユニットを6マイルストーンで進める。
@@ -214,6 +225,7 @@ PROBE は過去の「見積り規模 vs 実績規模」に回帰分析をかけ�
 
 | 文書 | 内容 |
 |---|---|
+| [docs/phase1/req/README.md](docs/phase1/req/README.md) | 要求仕様の記法（USDM）。ID 体系、Front Matter の項目、要求と仕様の書き方、避けるべき表現 |
 | [docs/architecture-analysis.md](docs/architecture-analysis.md) | 移植元のプログラム構造の解析。計算式エンジンの5層構造、永続化の4系統、ライセンス構造、調査カバレッジ |
 | [docs/deliverables-proposal.md](docs/deliverables-proposal.md) | **議論中。** フェーズごとに作成するドキュメント・コード・リソースの提案。18ユニットの定義、工程ゲート、トレーサビリティマトリクスの構造 |
 | [docs/dogfooding-roadmap.md](docs/dogfooding-roadmap.md) | 実装順序（確定）。M1〜M6 の内容、手動記録の様式、開発工程と PSP フェーズの対応 |
