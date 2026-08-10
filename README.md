@@ -38,9 +38,9 @@ PSP、TSP、Personal Software Process、Team Software Process はカーネギー
 | frontend | 未初期化（M1 に含む） |
 | 開発プロセスの定義 | 議論中（[成果物提案](docs/deliverables-proposal.md) 参照） |
 | 要求仕様の記法 | 確定（USDM ＋ IPA 6技術領域。[記法定義](docs/phase1/req/README.md)） |
-| 要求仕様 | 4/6本（M1 分。いずれも `draft`） |
+| 要求仕様 | **6/6本**（M1 分。いずれも `draft`。レビュー待ち） |
 | アーキテクチャ仕様書 | 段階1まで記述（[ARC](docs/phase1/arc-architecture.md)） |
-| 工程ゲート G1 | 未通過（要求4本と TM の骨格が残る） |
+| 工程ゲート G1 | 未通過（TM の骨格とレビューが残る） |
 | 実装順序 | 確定（データ収集先行。[ADR-0001](docs/adr/adr-0001-data-collection-first.md)） |
 | PSP 計測データ | A-1 を遡及登録済み。以降は M1 完成後に記録（[ADR-0002](docs/adr/adr-0002-measurement-recording.md)） |
 
@@ -70,6 +70,8 @@ processloop/
 │   │       ├─ fr-time-001.md     要求仕様（時間ログ）
 │   │       ├─ nfr-i18n-001.md    要求仕様（多言語対応）
 │   │       ├─ con-license-001.md 要求仕様（ライセンス順守）
+│   │       ├─ fr-sum-001.md      要求仕様（集計と表示）
+│   │       ├─ nfr-data-001.md    要求仕様（データ永続化）
 │   │       ├─ review-checklist.md  レビュー観点30項目
 │   │       ├─ diagram-guide.md   図表の書き方（工程成果物ごと）
 │   │       └─ ipa-integration-proposal.md  IPA ガイド統合の設計と経緯
