@@ -333,6 +333,18 @@ USDM が指摘する3つを守る。
 作図記法は **Mermaid に統一**する（[ADR-0003](../../adr/adr-0003-diagram-notation.md)）。
 GitHub 上でそのまま描画される。
 
+```mermaid
+stateDiagram-v2
+    [*] --> 停止中
+    停止中 --> 計測中: 開始する
+    計測中 --> 中断中: 中断する
+    中断中 --> 計測中: 再開する
+    計測中 --> 停止中: 終了する
+```
+
+<details>
+<summary>ソースを見る</summary>
+
 ````markdown
 ```mermaid
 stateDiagram-v2
@@ -343,6 +355,8 @@ stateDiagram-v2
     計測中 --> 停止中: 終了する
 ```
 ````
+
+</details>
 
 **一覧・定義・対応表は図にせず Markdown 表で書く。** 機械的な検査がしやすく、差分も読める。
 

@@ -13,12 +13,17 @@
     "test": "pnpm -r test",
     "lint": "pnpm -r lint",
     "typecheck": "pnpm -r typecheck",
-    "dev": "pnpm --filter frontend dev"
+    "dev": "pnpm --filter frontend dev",
+    "validate:mermaid": "node scripts/validate-mermaid.mjs"
   },
   "devDependencies": {
-    "@types/node": "^24.13.3"
+    "@types/node": "^24.13.3",
+    "jsdom": "^30.0.1",
+    "mermaid": "^11.16.1"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild"]
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }

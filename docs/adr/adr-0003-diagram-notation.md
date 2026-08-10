@@ -85,15 +85,15 @@ Mermaid の Requirement Diagram は SysML v1.6 の仕様に従う。
 requirementDiagram
 
 functionalRequirement time_record {
-    id: FR-TIME-001
-    text: 作業時間を計測して時間ログに記録する
+    id: "FR-TIME-001"
+    text: "作業時間を計測して時間ログに記録する"
     risk: Medium
     verifymethod: Test
 }
 
 element upstream_timelog {
-    type: 移植元
-    docref: log/time/TimeLogIOConstants.java@bf5a4d6
+    type: "移植元"
+    docref: "log/time/TimeLogIOConstants.java@bf5a4d6"
 }
 
 upstream_timelog - derives -> time_record
@@ -170,6 +170,11 @@ Processloop は Node.js と pnpm で環境を統一しており、
 | 画面レイアウトを描けない | 第1期は実装を正とする |
 | 大きな一覧表に向かない | Markdown 表で書く |
 | 描画環境によって使える機能が違う | GitHub が対応する範囲に留める |
+| 識別子のハイフンが構文エラーになる | `id` と `text` を引用符で囲む（下記） |
+
+⚠️ **Requirement Diagram では `id` と `text` を引用符で囲む。**
+引用符なしだと `FR-TIME-001` のハイフンをパーサが解釈できず、
+`Expecting 'NEWLINE', got 'LINE'` で構文エラーになる（Mermaid 11.16 で確認）。
 
 要素数が増えると線の交差や横長化が起きやすい。
 **図が読みにくくなったら、図を大きくするのではなく要求を分割する**という判断基準にする。
