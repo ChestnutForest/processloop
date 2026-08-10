@@ -99,6 +99,31 @@ element upstream_timelog {
 upstream_timelog - derives -> time_record
 ```
 
+<details>
+<summary>ソースを見る</summary>
+
+````markdown
+```mermaid
+requirementDiagram
+
+functionalRequirement time_record {
+    id: "FR-TIME-001"
+    text: "作業時間を計測して時間ログに記録する"
+    risk: Medium
+    verifymethod: Test
+}
+
+element upstream_timelog {
+    type: "移植元"
+    docref: "log/time/TimeLogIOConstants.java@bf5a4d6"
+}
+
+upstream_timelog - derives -> time_record
+```
+````
+
+</details>
+
 **要求一覧の図は Front Matter から自動生成できる。** 手で維持するとずれるため、これは重要である。
 
 ### Markdown への埋め込みと GitHub での描画

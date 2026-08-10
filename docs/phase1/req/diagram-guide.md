@@ -449,7 +449,16 @@ pnpm validate:mermaid
 Mermaid の書き方を「説明」するために4連バッククォート（````）で囲むと、
 GitHub はそれをコード例として表示し、**中身を描画しない**。
 
-本書では各図を2段構成にしている。上段は3連バッククォートで直接記述して描画させ、
-下段は `<details>` に畳んだソースを置く。
+**この2段構成は本書だけでなく、Mermaid を載せる全ファイルに適用する。**
+上段は3連バッククォートで直接記述して描画させ、下段は `<details>` に畳んだソースを置く。
+
+現在の対象は次のとおりで、`pnpm validate:mermaid` で構文を検証している。
+
+| ファイル | 図 |
+|---|---|
+| `docs/phase1/req/diagram-guide.md` | 6 |
+| `docs/phase1/req/README.md` | 1 |
+| `docs/phase1/req/fr-time-001.md` | 1 |
+| `docs/adr/adr-0003-diagram-notation.md` | 1 |
 
 検証スクリプトも同じ判定で、4連で囲まれた範囲を除外している。
