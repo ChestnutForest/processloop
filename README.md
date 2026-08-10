@@ -63,6 +63,7 @@ processloop/
 │   │   ├─ review-checklist.md    レビュー観点30項目
 │   │   ├─ diagram-guide.md       図表の書き方（工程成果物ごと）
 │   │   └─ ipa-integration-proposal.md  IPA ガイド統合の設計と経緯
+│   ├─ references.md              根拠とした一次情報の URL 一覧
 │   ├─ architecture-analysis.md   移植元のプログラム構造 解析報告
 │   ├─ deliverables-proposal.md   フェーズ別 成果物提案（議論中）
 │   ├─ dogfooding-roadmap.md      実装順序（M1〜M6）
@@ -239,6 +240,7 @@ PROBE は過去の「見積り規模 vs 実績規模」に回帰分析をかけ�
 | [docs/phase1/req/ipa-integration-proposal.md](docs/phase1/req/ipa-integration-proposal.md) | IPA「機能要件の合意形成ガイド」の6技術領域を USDM に統合した設計と、決定の経緯 |
 | [docs/phase1/req/review-checklist.md](docs/phase1/req/review-checklist.md) | 要求仕様のレビュー観点30項目。合意成熟度の移行時に使う |
 | [docs/phase1/req/diagram-guide.md](docs/phase1/req/diagram-guide.md) | 図表の書き方。工程成果物ごとに Mermaid と Markdown 表を使い分ける |
+| [docs/references.md](docs/references.md) | 根拠とした一次情報。USDM の小冊子、IPA 機能要件の合意形成ガイド全7編、発注者ビューガイドラインの系譜、使用条件 |
 | [docs/architecture-analysis.md](docs/architecture-analysis.md) | 移植元のプログラム構造の解析。計算式エンジンの5層構造、永続化の4系統、ライセンス構造、調査カバレッジ |
 | [docs/deliverables-proposal.md](docs/deliverables-proposal.md) | **議論中。** フェーズごとに作成するドキュメント・コード・リソースの提案。18ユニットの定義、工程ゲート、トレーサビリティマトリクスの構造 |
 | [docs/dogfooding-roadmap.md](docs/dogfooding-roadmap.md) | 実装順序（確定）。M1〜M6 の内容、手動記録の様式、開発工程と PSP フェーズの対応 |

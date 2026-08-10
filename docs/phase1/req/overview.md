@@ -7,7 +7,8 @@ IPA「機能要件の合意形成ガイド」の概要編に相当する。
 定義されている。本書はその段階を満たすことを目的とし、
 **一覧と共通ルールまでを書き、詳細は個別の要求仕様に委ねる**。
 
-記法の定義は [README.md](README.md)、図表の書き方は [diagram-guide.md](diagram-guide.md) を参照。
+記法の定義は [README.md](README.md)、図表の書き方は [diagram-guide.md](diagram-guide.md)、
+根拠とした一次情報は [references.md](../../references.md) を参照。
 
 ---
 

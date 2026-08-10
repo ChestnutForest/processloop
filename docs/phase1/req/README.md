@@ -5,7 +5,8 @@ USDM は清水吉男氏が提唱した記法で、要求と仕様を階層構造
 要求には必ず理由を添えることを求める。
 
 出典: 派生開発推進協議会 AFFORDD T2 研究会「USDM 小冊子 基礎編 ver 1.3」（2016）
-https://affordd.jp/previous/results.shtml
+
+一次情報の URL は [references.md](../../references.md) に集約している。
 
 本書は、Excel 表を前提とする USDM の様式を **Markdown + YAML Front Matter** に写す方法を定める。
 

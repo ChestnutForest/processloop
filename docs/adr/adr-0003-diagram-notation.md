@@ -224,3 +224,4 @@ Processloop は Node.js と pnpm で環境を統一しており、
 | [../phase1/req/diagram-guide.md](../phase1/req/diagram-guide.md) | 工程成果物ごとの具体的な書き方 |
 | [../phase1/req/ipa-integration-proposal.md](../phase1/req/ipa-integration-proposal.md) | 技術領域と工程成果物の定義 |
 | [adr-0001-data-collection-first.md](adr-0001-data-collection-first.md) | 実装順序。依存を増やさない方針の背景 |
+| [../references.md](../references.md) | Mermaid と draw.io の一次情報 |
