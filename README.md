@@ -61,13 +61,15 @@ processloop/
 │   │   ├─ _schema/               Front Matter の JSON Schema
 │   │   ├─ fr-time-001.md         要求の実例
 │   │   ├─ review-checklist.md    レビュー観点30項目
+│   │   ├─ diagram-guide.md       図表の書き方（工程成果物ごと）
 │   │   └─ ipa-integration-proposal.md  IPA ガイド統合の設計と経緯
 │   ├─ architecture-analysis.md   移植元のプログラム構造 解析報告
 │   ├─ deliverables-proposal.md   フェーズ別 成果物提案（議論中）
 │   ├─ dogfooding-roadmap.md      実装順序（M1〜M6）
 │   ├─ adr/                       アーキテクチャ決定記録
 │   │   ├─ adr-0001-data-collection-first.md
-│   │   └─ adr-0002-measurement-recording.md
+│   │   ├─ adr-0002-measurement-recording.md
+│   │   └─ adr-0003-diagram-notation.md
 │   ├─ psp-data/                  この開発自体の PSP 計測データ
 │   │   ├─ size-log.csv           成果物規模（PROBE の入力）
 │   │   ├─ defect-log.csv         欠陥（混入・発見・分類）
@@ -185,6 +187,7 @@ PROBE、EV計算、EVレポート、永続化層、Templates変換の10ユニッ
 要求・理由・説明・仕様グループ・仕様を階層構造で表し、要求には必ず理由を添える。
 Excel を前提とする USDM の様式を、Markdown + YAML Front Matter に写している。
 記法と ID 体系は [docs/phase1/req/README.md](docs/phase1/req/README.md) を参照。
+図表は Mermaid に統一している（[ADR-0003](docs/adr/adr-0003-diagram-notation.md)）。
 
 あわせて、IPA「機能要件の合意形成ガイド」（2010）が定める6技術領域を
 網羅性の軸として USDM に取り込んでいる。USDM が要求から仕様への縦の構造を与え、
@@ -235,6 +238,7 @@ PROBE は過去の「見積り規模 vs 実績規模」に回帰分析をかけ�
 | [docs/phase1/req/README.md](docs/phase1/req/README.md) | 要求仕様の記法（USDM）。ID 体系、Front Matter の項目、要求と仕様の書き方、避けるべき表現 |
 | [docs/phase1/req/ipa-integration-proposal.md](docs/phase1/req/ipa-integration-proposal.md) | IPA「機能要件の合意形成ガイド」の6技術領域を USDM に統合した設計と、決定の経緯 |
 | [docs/phase1/req/review-checklist.md](docs/phase1/req/review-checklist.md) | 要求仕様のレビュー観点30項目。合意成熟度の移行時に使う |
+| [docs/phase1/req/diagram-guide.md](docs/phase1/req/diagram-guide.md) | 図表の書き方。工程成果物ごとに Mermaid と Markdown 表を使い分ける |
 | [docs/architecture-analysis.md](docs/architecture-analysis.md) | 移植元のプログラム構造の解析。計算式エンジンの5層構造、永続化の4系統、ライセンス構造、調査カバレッジ |
 | [docs/deliverables-proposal.md](docs/deliverables-proposal.md) | **議論中。** フェーズごとに作成するドキュメント・コード・リソースの提案。18ユニットの定義、工程ゲート、トレーサビリティマトリクスの構造 |
 | [docs/dogfooding-roadmap.md](docs/dogfooding-roadmap.md) | 実装順序（確定）。M1〜M6 の内容、手動記録の様式、開発工程と PSP フェーズの対応 |

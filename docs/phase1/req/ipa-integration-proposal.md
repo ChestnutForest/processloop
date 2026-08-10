@@ -176,17 +176,27 @@ domains:
 
 ### 統合点3：図表を Mermaid で持つ
 
-IPA ガイドは技術領域ごとに具体的な図表を挙げている。Processloop で該当するものを整理する。
+作図記法は **Mermaid に統一**した。決定の経緯は
+[adr/adr-0003-diagram-notation.md](../../adr/adr-0003-diagram-notation.md) を参照。
 
-| 技術領域 | IPA が挙げる図表 | Processloop での記法 |
-|---|---|---|
-| システム振舞い | 業務フロー、システムフロー、機能一覧 | Mermaid（flowchart, stateDiagram, sequenceDiagram） |
-| 画面 | 画面一覧、画面レイアウト、画面遷移図、入出力項目一覧 | 画面遷移図は Mermaid。**レイアウトは別途** |
-| データモデル | ER図、エンティティ一覧、CRUD図 | ER図は Mermaid（erDiagram）。CRUD図は表 |
+| 工程成果物の性質 | 記法 |
+|---|---|
+| 関係・流れ・状態 | **Mermaid** |
+| 一覧・定義・対応表 | **Markdown 表** |
+| API の入出力 | **OpenAPI（YAML）** |
+| 画面の見た目 | **実装を正とする**（第1期） |
 
-⚠️ **画面レイアウトは Mermaid で書けない。** 実装後のスクリーンショット、
-または `frontend` の実装そのものを参照とする。第1期では画面が5つしかないため、
-実装を正とし、要求仕様には項目一覧のみを書く方針を提案する。
+PlantUML と draw.io は採用しない。draw.io の利点は非技術者と画面を見ながら修正できることだが、
+**Processloop には発注者が存在しない**ためその利点が働かない。
+
+Mermaid の Requirement Diagram は SysML v1.6 に従い、その関係型が
+Front Matter の `parent` / `source` / `unit` / `test_refs` / `depends_on` と対応する。
+**要求一覧の図は Front Matter から自動生成できる。**
+
+工程成果物ごとの具体的な書き方は [diagram-guide.md](diagram-guide.md) に定めた。
+
+⚠️ **画面レイアウトは Mermaid で書けない。** 第1期は画面が5つと少なく、
+発注者もいないため、実装そのものを正とする。
 
 ### 統合点4：「コツ」をレビュー観点に変換する
 
@@ -215,6 +225,7 @@ docs/phase1/req/
 ├─ README.md              記法の定義（USDM ＋ 本統合）
 ├─ overview.md            ★概要編に相当。目的・範囲・用語・カバレッジ
 ├─ review-checklist.md    ★レビュー観点（IPA のコツ ＋ USDM の注意点）
+├─ diagram-guide.md       ★図表の書き方（工程成果物ごと）
 ├─ _template.md           雛形
 ├─ _schema/
 │   └─ requirement.schema.json
