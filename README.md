@@ -38,7 +38,7 @@ PSP、TSP、Personal Software Process、Team Software Process はカーネギー
 | frontend | 未初期化（M1 に含む） |
 | 開発プロセスの定義 | 議論中（[成果物提案](docs/deliverables-proposal.md) 参照） |
 | 要求仕様の記法 | 確定（USDM ＋ IPA 6技術領域。[記法定義](docs/phase1/req/README.md)） |
-| 要求仕様 | 2/6本（M1 分。いずれも `draft`） |
+| 要求仕様 | 4/6本（M1 分。いずれも `draft`） |
 | アーキテクチャ仕様書 | 段階1まで記述（[ARC](docs/phase1/arc-architecture.md)） |
 | 工程ゲート G1 | 未通過（要求4本と TM の骨格が残る） |
 | 実装順序 | 確定（データ収集先行。[ADR-0001](docs/adr/adr-0001-data-collection-first.md)） |
@@ -68,6 +68,8 @@ processloop/
 │   │       ├─ _schema/           Front Matter の JSON Schema
 │   │       ├─ fr-hier-001.md     要求仕様（階層）
 │   │       ├─ fr-time-001.md     要求仕様（時間ログ）
+│   │       ├─ nfr-i18n-001.md    要求仕様（多言語対応）
+│   │       ├─ con-license-001.md 要求仕様（ライセンス順守）
 │   │       ├─ review-checklist.md  レビュー観点30項目
 │   │       ├─ diagram-guide.md   図表の書き方（工程成果物ごと）
 │   │       └─ ipa-integration-proposal.md  IPA ガイド統合の設計と経緯
