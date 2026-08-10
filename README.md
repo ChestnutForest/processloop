@@ -38,6 +38,9 @@ PSP、TSP、Personal Software Process、Team Software Process はカーネギー
 | frontend | 未初期化（M1 に含む） |
 | 開発プロセスの定義 | 議論中（[成果物提案](docs/deliverables-proposal.md) 参照） |
 | 要求仕様の記法 | 確定（USDM ＋ IPA 6技術領域。[記法定義](docs/phase1/req/README.md)） |
+| 要求仕様 | 2/6本（M1 分。いずれも `draft`） |
+| アーキテクチャ仕様書 | 段階1まで記述（[ARC](docs/phase1/arc-architecture.md)） |
+| 工程ゲート G1 | 未通過（要求4本と TM の骨格が残る） |
 | 実装順序 | 確定（データ収集先行。[ADR-0001](docs/adr/adr-0001-data-collection-first.md)） |
 | PSP 計測データ | A-1 を遡及登録済み。以降は M1 完成後に記録（[ADR-0002](docs/adr/adr-0002-measurement-recording.md)） |
 
@@ -55,14 +58,19 @@ processloop/
 ├─ frontend/             Next.js アプリケーション（未初期化）
 ├─ i18n/                 多言語メッセージ（en / ja）
 ├─ docs/                 設計・移植メモ
-│   ├─ phase1/req/                要求仕様（USDM・1要求1ファイル）
-│   │   ├─ README.md              記法と ID 体系の定義
-│   │   ├─ _template.md           新規作成の雛形
-│   │   ├─ _schema/               Front Matter の JSON Schema
-│   │   ├─ fr-time-001.md         要求の実例
-│   │   ├─ review-checklist.md    レビュー観点30項目
-│   │   ├─ diagram-guide.md       図表の書き方（工程成果物ごと）
-│   │   └─ ipa-integration-proposal.md  IPA ガイド統合の設計と経緯
+│   ├─ phase1/                    第1期の仕様
+│   │   ├─ arc-architecture.md    アーキテクチャ仕様書（段階1まで記述）
+│   │   ├─ arc-outline.md         同 目次と段階分割の根拠
+│   │   └─ req/                   要求仕様（USDM・1要求1ファイル）
+│   │       ├─ README.md          記法と ID 体系の定義
+│   │       ├─ overview.md        要件定義の概要（目的・範囲・用語・共通ルール）
+│   │       ├─ _template.md       新規作成の雛形
+│   │       ├─ _schema/           Front Matter の JSON Schema
+│   │       ├─ fr-hier-001.md     要求仕様（階層）
+│   │       ├─ fr-time-001.md     要求仕様（時間ログ）
+│   │       ├─ review-checklist.md  レビュー観点30項目
+│   │       ├─ diagram-guide.md   図表の書き方（工程成果物ごと）
+│   │       └─ ipa-integration-proposal.md  IPA ガイド統合の設計と経緯
 │   ├─ references.md              根拠とした一次情報の URL 一覧
 │   ├─ architecture-analysis.md   移植元のプログラム構造 解析報告
 │   ├─ deliverables-proposal.md   フェーズ別 成果物提案（議論中）
@@ -236,6 +244,9 @@ PROBE は過去の「見積り規模 vs 実績規模」に回帰分析をかけ�
 
 | 文書 | 内容 |
 |---|---|
+| [docs/phase1/arc-architecture.md](docs/phase1/arc-architecture.md) | **移植先の設計仕様。** 層構成、データモデル、画面、テスト方式。段階1まで記述 |
+| [docs/phase1/arc-outline.md](docs/phase1/arc-outline.md) | ARC の目次と3段階に分けた根拠 |
+| [docs/phase1/req/overview.md](docs/phase1/req/overview.md) | 要件定義の概要。目的・範囲・用語集・共通ルール・技術領域のカバレッジ |
 | [docs/phase1/req/README.md](docs/phase1/req/README.md) | 要求仕様の記法（USDM）。ID 体系、Front Matter の項目、要求と仕様の書き方、避けるべき表現 |
 | [docs/phase1/req/ipa-integration-proposal.md](docs/phase1/req/ipa-integration-proposal.md) | IPA「機能要件の合意形成ガイド」の6技術領域を USDM に統合した設計と、決定の経緯 |
 | [docs/phase1/req/review-checklist.md](docs/phase1/req/review-checklist.md) | 要求仕様のレビュー観点30項目。合意成熟度の移行時に使う |

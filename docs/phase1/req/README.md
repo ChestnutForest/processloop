@@ -462,6 +462,12 @@ Front Matter から機械的に抽出できるため、**トレーサビリテ�
 要求仕様は単一の文書ではなく1要求1ファイルとなるため、
 [deliverables-proposal.md](../../deliverables-proposal.md) の文書構成も本形式に合わせて更新済みである。
 
+要求を受けた設計は [arc-architecture.md](../arc-architecture.md) に定める。
+
+```
+https://github.com/ChestnutForest/processloop/blob/main/docs/phase1/arc-architecture.md
+```
+
 ---
 
 ## 11. 作成の手順
