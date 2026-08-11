@@ -6,7 +6,7 @@ category_name: ライセンス順守
 title: GPLv3 を維持して移植元の帰属を保持する
 type: constraint
 priority: must
-status: draft
+status: reviewed
 domains:
   - none
 parent: null

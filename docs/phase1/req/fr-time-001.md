@@ -6,7 +6,7 @@ category_name: 時間ログ
 title: 作業時間を計測して時間ログに記録する
 type: functional
 priority: must
-status: draft
+status: reviewed
 domains:
   - behavior
   - screen

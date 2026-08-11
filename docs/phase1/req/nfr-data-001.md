@@ -6,7 +6,7 @@ category_name: データ永続化
 title: 記録したデータを永続化して再起動後も参照できるようにする
 type: non_functional
 priority: must
-status: draft
+status: reviewed
 domains:
   - data_model
   - behavior

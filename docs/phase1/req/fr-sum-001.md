@@ -6,7 +6,7 @@ category_name: 時間ログ
 title: 記録した作業時間を集計して表示する
 type: functional
 priority: must
-status: draft
+status: reviewed
 domains:
   - behavior
   - screen
@@ -152,7 +152,7 @@ flowchart TD
 ### <時間ログの読み出し>
 
 - [ ] **FR-SUM-001.110** 表示対象のノードとその子孫に紐づく時間ログを、すべて読み出す。
-- [ ] **FR-SUM-001.120** 計測中の記録は集計に含めない。
+- [ ] **FR-SUM-001.120** 計測中の記録を集計に含めず、計測中のノードがある場合はその旨を表示する。
 
 ### <正味時間の合算>
 
