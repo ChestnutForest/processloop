@@ -13,7 +13,7 @@ https://github.com/ChestnutForest/processloop/blob/main/docs/architecture-analys
 
 ## 本書の状態
 
-**段階1（仕掛レベル相当）まで記述済み。**
+**段階2まで記述済み。** 段階3（計算式エンジン）は M3 着手前に書く。
 
 工程ゲート G1 の条件は「要求仕様と ARC が承認され、TM の骨格ができている」であり、
 ARC の完成を求めていない。IPA の合意成熟度でも、仕掛レベルは
@@ -29,10 +29,10 @@ https://github.com/ChestnutForest/processloop/blob/main/docs/phase1/arc-outline.
 |---|---|---|---|
 | 1 本書の位置づけ | ✅ | | |
 | 2 全体構成 | ✅ | | |
-| 3 データモデル | ✅ 一覧とER図 | 属性・スキーマ・CRUD図 | |
-| 4 計算式エンジン | | | M3 着手前 |
+| 3 データモデル | ✅ 一覧とER図 | ✅ 属性・スキーマ・CRUD図 | |
+| 4 計算式エンジン | | | ⬜ M3 着手前 |
 | 5 永続化 | | ✅ | |
-| 6 画面 | ✅ 一覧と遷移 | 構成の詳細 | |
+| 6 画面 | ✅ 一覧と遷移 | ✅ 構成の詳細 | |
 | 7 API | | ✅ | |
 | 8 テスト方式 | ✅ 境界の定義 | | |
 | 9 横断的な方針 | | ✅ | |
@@ -355,6 +355,145 @@ https://github.com/ChestnutForest/processloop/blob/main/docs/phase1/req/fr-hier-
 | 欠陥の混入・除去フェーズ | 歩留まり、欠陥密度 |
 | 見積り規模、実績規模 | PROBE の回帰結果 |
 
+### 3.5 エンティティの定義
+
+#### HierarchyNode
+
+| # | 属性 | 型 | 桁 | 必須 | 範囲・制約 | 説明 |
+|---|---|---|---|---|---|---|
+| 1 | id | Int | — | ✅ | 自動採番 | 主キー |
+| 2 | name | String | 200 | ✅ | 1文字以上。同一の親の下で重複不可 | ノード名 |
+| 3 | path | String | 1000 | ✅ | 先頭が `/`。区切りは `/`。全体で一意 | 階層パス |
+| 4 | templateId | String | 50 | | `PSP2` など | プロセス定義の識別子 |
+| 5 | phaseType | String | 20 | | `plan` `dld` `dldr` `code` `cr` `comp` `ut` `pm` | フェーズ種別 |
+| 6 | parentId | Int | — | | 自己参照 | 親ノード |
+| 7 | sortOrder | Int | — | ✅ | 0以上 | 兄弟内の順序 |
+| 8 | createdAt | DateTime | — | ✅ | — | 作成日時 |
+| 9 | updatedAt | DateTime | — | ✅ | — | 更新日時 |
+
+⚠️ **`phaseType` は文字列で持つ。** 列挙型にすると、移植元がフェーズ種別を追加したときに
+マイグレーションが必要になる。移植元の `PhaseUtil` が文字列で判定していることにも合わせる。
+
+#### TimeLogEntry
+
+| # | 属性 | 型 | 桁 | 必須 | 範囲・制約 | 説明 |
+|---|---|---|---|---|---|---|
+| 1 | id | Int | — | ✅ | 自動採番 | 主キー |
+| 2 | nodeId | Int | — | ✅ | 外部キー | 対象ノード |
+| 3 | path | String | 1000 | ✅ | — | 記録時点の階層パス |
+| 4 | start | DateTime | — | ✅ | 未来時刻を許さない | 計測開始 |
+| 5 | delta | Int | — | ✅ | 0以上 | **正味時間（分）** |
+| 6 | interrupt | Int | — | ✅ | 0以上 `delta` 以下 | **中断時間（分）** |
+| 7 | comment | String | 1000 | | — | コメント |
+| 8 | createdAt | DateTime | — | ✅ | — | 記録日時 |
+
+**`path` を外部キーと併せて持つ理由**は2つある。移植元が `path` で結ぶ設計であり
+既存データの移行時に対応が取れること、そしてノード名の変更前の位置を保てることである。
+
+#### Defect（M2）
+
+| # | 属性 | 型 | 桁 | 必須 | 説明 |
+|---|---|---|---|---|---|
+| 1 | id | Int | — | ✅ | 主キー |
+| 2 | nodeId | Int | — | ✅ | 対象ノード |
+| 3 | number | String | 20 | ✅ | 欠陥番号 |
+| 4 | defectType | String | 30 | ✅ | PSP 標準10種 |
+| 5 | phaseInjected | String | 50 | ✅ | 混入フェーズ |
+| 6 | phaseRemoved | String | 50 | ✅ | 除去フェーズ |
+| 7 | fixTime | Int | — | | 修正時間（分） |
+| 8 | fixDefect | String | 20 | | 関連する欠陥番号 |
+| 9 | fixCount | Int | — | ✅ | 既定値 1 |
+| 10 | fixPending | Boolean | — | ✅ | 既定値 false |
+| 11 | description | String | 2000 | | 内容 |
+| 12 | date | DateTime | — | ✅ | 発見日時 |
+
+#### DataValue（M3）
+
+⚠️ **M3 で確定する。** 計算式エンジンが扱う値を保持するモデルであり、
+エンジンの設計に依存する。M1 と M2 では使用しない。
+
+現時点で確定しているのは、`path` と名前の組で値を特定することのみである。
+
+### 3.6 Prisma スキーマ
+
+M1 で必要な2モデルを示す。`Defect` と `DataValue` は各マイルストーンで追加する。
+
+```prisma
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model HierarchyNode {
+  id         Int      @id @default(autoincrement())
+  name       String
+  path       String   @unique
+  templateId String?
+  phaseType  String?
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  parentId   Int?
+  parent     HierarchyNode?  @relation("Tree", fields: [parentId], references: [id])
+  children   HierarchyNode[] @relation("Tree")
+
+  timeLog    TimeLogEntry[]
+
+  @@unique([parentId, name])
+  @@index([path])
+}
+
+model TimeLogEntry {
+  id        Int      @id @default(autoincrement())
+  nodeId    Int
+  node      HierarchyNode @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+  path      String
+  start     DateTime
+  delta     Int
+  interrupt Int      @default(0)
+  comment   String?
+  createdAt DateTime @default(now())
+
+  @@index([nodeId])
+  @@index([path])
+  @@index([start])
+}
+```
+
+**設計上の判断**
+
+| 判断 | 理由 |
+|---|---|
+| `@@unique([parentId, name])` | 同一の親の下で名前の重複を防ぐ（`FR-HIER-001.20`） |
+| `path` に `@unique` | 全体で一意。集計時の結合キーになる |
+| `onDelete: Cascade` | ⚠️ フェーズ削除時に時間ログも消える。`FR-HIER-001.350` に対応する |
+| `interrupt` に既定値 0 | 中断なしが通常であるため |
+| `start` に索引 | 期間での絞り込み（第1.5期）に備える |
+
+⚠️ **`onDelete: Cascade` は慎重に扱う。** 確認なしに削除されると記録が失われる。
+削除の前に件数と合計時間を示して確認を求める処理は、
+**ドメイン層で行う**（`FR-HIER-001.340`）。データベースの制約に頼らない。
+
+### 3.7 CRUD図
+
+| 機能 | HierarchyNode | TimeLogEntry | Defect | DataValue |
+|---|---|---|---|---|
+| 階層を作る | C | | | |
+| ノード名を変更する | U | U（`path`） | U（`path`） | U（`path`） |
+| プロセスを割り当てる | C U | | | |
+| プロセスを変更する | C U D | D | D | D |
+| 時間を計測する | R | C | | |
+| 欠陥を記録する | R | | C | |
+| サマリを表示する | R | R | R | |
+
+⚠️ **ノード名の変更が4モデルすべてに波及する。** `path` を持つすべての行を
+更新する必要がある（`FR-HIER-001.520`）。実装では単一のトランザクションで行う。
+
 ---
 
 ## 4. 計算式エンジン
@@ -372,12 +511,68 @@ TypeScript で直接書き（約100行）、M3 でエンジンに置き換える
 
 ## 5. 永続化
 
-⚠️ **段階2で記述する。**
+### 5.1 SQLite と Prisma を採用する理由
 
-現時点で確定しているのは次の2点である。
+| 候補 | 判断 |
+|---|---|
+| **SQLite ＋ Prisma** | ✅ 採用。ファイル1つで完結し、個人利用に十分 |
+| ブラウザのストレージ | ❌ 容量制限があり、消去される恐れがある |
+| 移植元と同じファイル形式 | ❌ 検索と集計に向かない |
+| PostgreSQL などのサーバ型 | ❌ 個人利用には過剰。第2期で再検討 |
 
-- SQLite を用い、Prisma 経由で操作する
-- リポジトリ層は `packages/core` に置き、frontend から直接データベースに触れない
+Prisma を選ぶのは、スキーマからの型生成により
+`packages/core` の型安全を保てるためである。ライセンスは Apache-2.0 で GPLv3 と両立する。
+
+### 5.2 リポジトリ層の責務
+
+**frontend から直接データベースに触れない。** `packages/core/src/persistence/` に
+リポジトリ層を置き、ドメインロジックからのみ呼ぶ。
+
+| 層 | 責務 |
+|---|---|
+| Route Handlers | 入力の検証、リポジトリ層の呼び出し、応答の組み立て |
+| ドメインロジック | 業務規則の判定、複数のリポジトリの調整 |
+| **リポジトリ層** | **Prisma の呼び出し、モデルとドメイン型の変換** |
+
+分離の理由は、M3 で計算式エンジンを導入する際に、
+**値の取得元をデータベースからエンジンへ差し替える**ためである。
+呼び出し側がリポジトリ層のインタフェースだけを見ていれば、差し替えが局所化する。
+
+### 5.3 移植元のファイル形式との対応
+
+第1.5期でデータ移行を実装する場合に必要となるため、対応を記録する。
+
+| 移植元 | 形式 | 移植先 | 対応の要点 |
+|---|---|---|---|
+| `state` | XML。`<node>` の入れ子。属性11種 | `HierarchyNode` | `templateID` → `templateId`。`dataFile` と `defectLog` は移植しない |
+| `timelog.xml` | XML。全ノード分を1ファイル | `TimeLogEntry` | `flag` は移植しない（チーム同期用） |
+| `*.def` | 旧はタブ区切り8項目、新は XML | `Defect` | 新形式のみ対応 |
+| `*.dat` | 連番。計算式を含む | ⚠️ M3 で設計 | エンジンの設計に依存 |
+
+⚠️ 移植元は連番のファイル名（`0.dat` `1.dat`）でノードとデータを対応付ける。
+移植先では外部キーで結ぶため、**この連番の仕組みは引き継がない**。
+
+### 5.4 マイグレーション
+
+**Prisma Migrate を用いる。** 最初から仕組みを用意し、後から導入しない。
+
+```
+prisma/migrations/
+├─ 20260812000000_init/
+└─ 20260901000000_add_defect/
+```
+
+⚠️ **M1 完成の時点から実データが入る。** ドッグフーディングにより
+この開発自体の記録が蓄積されるため、破壊的な変更には注意が要る。
+
+| 変更 | 扱い |
+|---|---|
+| 列の追加（NULL 許容） | そのまま適用できる |
+| 列の追加（NOT NULL） | 既定値を与える |
+| 列の削除・改名 | ⚠️ データの移し替えを伴う。慎重に判断する |
+| モデルの追加 | そのまま適用できる |
+
+適用済みのスキーマ版を記録し、起動時に照合する（`NFR-DATA-001.420`）。
 
 ---
 
@@ -449,7 +644,7 @@ flowchart LR
 https://github.com/ChestnutForest/processloop/blob/main/docs/phase1/req/diagram-guide.md
 ```
 
-### 6.3 画面レイアウトを実装に委ねる
+### 6.3 画面レイアウトの扱い
 
 **第1期では画面レイアウトの設計書を作らない。実装そのものを正とする。**
 
@@ -458,20 +653,103 @@ https://github.com/ChestnutForest/processloop/blob/main/docs/phase1/req/diagram-
 
 ⚠️ 第2期でチーム利用に広がった時点で再検討する。
 
-### 6.4 構成の詳細
+### 6.4 Next.js の構成
 
-⚠️ **段階2で記述する。** Next.js の App Router、状態管理、next-intl の構成を扱う。
+**App Router を用いる。** 言語の切り替えを URL ではなく設定で行うため、
+言語別のセグメントは設けない。
+
+```
+frontend/
+├─ app/
+│  ├─ layout.tsx            共通レイアウト。i18n の Provider を置く
+│  ├─ page.tsx              階層画面（既定）
+│  ├─ timer/page.tsx        タイマー画面
+│  ├─ defects/page.tsx      欠陥ログ画面（M2）
+│  ├─ probe/page.tsx        PROBE 画面（M4）
+│  ├─ summary/page.tsx      サマリ画面
+│  └─ api/                  Route Handlers
+└─ prisma/schema.prisma
+```
+
+⚠️ **URL に言語を含めない判断**は `NFR-I18N-001` に由来する。
+利用者が明示的に選んだ言語を記憶する方式であり、URL で切り替える必要がない。
+個人利用のため、言語別 URL の共有という利点も働かない。
+
+### 6.5 状態管理
+
+**第1期では状態管理ライブラリを導入しない。**
+
+| 状態 | 保持先 |
+|---|---|
+| 画面をまたぐ業務データ | サーバ（Route Handlers 経由で取得） |
+| 計測中の経過時間 | React の `useState` |
+| 選択中の言語 | next-intl と `localStorage` |
+
+⚠️ M3 で `@preact/signals-core` を `packages/core` に導入するが、
+**UI の状態管理には用いない**。エンジン内部の依存追跡に限る。
+
+### 6.6 多言語対応の構成
+
+```
+i18n/messages/
+├─ en.json
+└─ ja.json
+```
+
+`frontend` から相対パスで参照する。**メッセージを `frontend` に置かない**のは、
+将来 `packages/core` からもエラーメッセージを出す可能性があるためである。
 
 ---
 
 ## 7. API
 
-⚠️ **段階2で記述する。**
+### 7.1 Route Handlers に統合する
 
-現時点で確定しているのは、**別サーバを建てず Next.js の Route Handlers に統合する**ことである。
-根拠は `packages/core` が UI 非依存であり、実行の場所を選ばないためである。
+**別サーバを建てない。** Next.js の Route Handlers に API を置く。
 
-API の入出力は OpenAPI（YAML）で `docs/phase1/api/openapi.yaml` に別管理する。
+根拠は `packages/core` が UI 非依存であり、実行の場所を選ばないことである。
+個人利用でサーバを分ける必要がなく、デプロイも1つで済む。
+
+⚠️ 第2期でチーム機能が加わり集計処理が重くなった場合、
+`packages/core` を独立サーバへ切り出す選択肢が残る。UI 非依存を保つ理由の1つである。
+
+### 7.2 エンドポイント（M1）
+
+| メソッド | パス | 対応する要求 |
+|---|---|---|
+| GET | `/api/nodes` | `FR-HIER-001` |
+| POST | `/api/nodes` | `FR-HIER-001.10` 〜 `.230` |
+| PATCH | `/api/nodes/{id}` | `FR-HIER-001.310` 〜 `.520` |
+| DELETE | `/api/nodes/{id}` | `FR-HIER-001.340` `.350` |
+| GET | `/api/time-log` | `FR-SUM-001.110` |
+| POST | `/api/time-log` | `FR-TIME-001.510` |
+| GET | `/api/summary` | `FR-SUM-001` |
+| GET | `/api/processes` | `FR-HIER-001.310` |
+
+⚠️ **計測の開始と終了に API を設けない。** 経過時間は画面側で保持し、
+**終了時に1件を POST する**（`FR-TIME-001.510`）。
+計測中に毎秒サーバへ送ると、無用な負荷と障害点が生じる。
+
+### 7.3 OpenAPI で別管理する
+
+入出力の定義は `docs/phase1/api/openapi.yaml` に置く。
+
+理由は2つある。機械可読な標準形式で持つほうが検証やコード生成に使えること、
+そして要求仕様に埋め込むと要求の変更と API の変更が区別できなくなることである。
+
+要求仕様からは相対パスで参照する。
+
+### 7.4 エラーの返し方
+
+| 状況 | HTTP 状態 | 本体 |
+|---|---|---|
+| 入力値が範囲外 | 400 | 該当項目とメッセージキー |
+| 対象が存在しない | 404 | メッセージキー |
+| 一意制約に違反 | 409 | 該当項目とメッセージキー |
+| 予期しない失敗 | 500 | メッセージキーのみ |
+
+**本体に文言そのものを入れない。** メッセージキーを返し、画面側で翻訳する
+（`NFR-I18N-001.210`）。サーバが言語を判断しないためである。
 
 ---
 
@@ -548,12 +826,70 @@ https://github.com/ChestnutForest/processloop/blob/main/docs/phase1/req/_schema/
 
 ## 9. 横断的な方針
 
-⚠️ **段階2で記述する。**
+規約そのものは [overview.md](req/overview.md) の共通ルールに定めている。
+**本章は、規約を実装でどう担保するかを書く。**
 
-エラー処理、文字コード、時刻の扱い、ライセンス順守を扱う。
+### 9.1 エラー処理
 
-⚠️ 文字コードと時刻の**規約自体は [overview.md](req/overview.md) の共通ルールに定めている**。
-本書では規約を再掲せず、**実装でどう担保するか**を書く。
+| 層 | 責務 |
+|---|---|
+| リポジトリ層 | データベースの失敗を、意味のある型に変換して投げる |
+| ドメインロジック | 業務規則の違反を判定し、該当項目とともに投げる |
+| Route Handlers | 例外を HTTP 状態とメッセージキーに写す |
+| 画面 | メッセージキーを翻訳して表示し、入力内容を保持する |
+
+**入力内容を失わせない**（`NFR-DATA-001.30`）。保存に失敗しても再試行できる状態を保つ。
+
+### 9.2 文字コードと改行
+
+**BOM なし UTF-8、改行 LF。**
+
+| 対象 | 担保の方法 |
+|---|---|
+| リポジトリ内のファイル | `.gitattributes` で `* text=auto eol=lf` |
+| 生成するファイル | Node.js の `writeFile` は既定で BOM を付けない |
+| PowerShell からの書き出し | ⚠️ `[System.IO.File]::WriteAllLines` を使う |
+
+⚠️ PowerShell 5.1 のリダイレクト `>` は UTF-16LE、
+`Set-Content -Encoding UTF8` は BOM 付きになる。**いずれも使わない。**
+ゴールデンファイルを壊した事例がある。
+
+### 9.3 時刻
+
+| 場面 | 扱い |
+|---|---|
+| データベース | UTC で保持する |
+| API の入出力 | ISO 8601。タイムゾーンを含める |
+| 画面の表示 | 実行環境のタイムゾーンへ変換する |
+| 時間の単位 | 分。秒以下は切り捨てる |
+
+**計測の経過時間だけは秒まで表示する**（`FR-TIME-001.210`）。
+記録するのは分単位だが、計測中の表示は秒があるほうが動作が分かる。
+
+### 9.4 ライセンス順守
+
+`CON-LICENSE-001` を実装で担保する方法を定める。
+
+| 対象 | 方法 |
+|---|---|
+| 移植したファイル | 冒頭に移植元の著作権表示・ファイル名・上流SHA を書く |
+| 代替した部分 | 代替の理由を併記する（LGPL 回避など） |
+| npm 依存 | 追加のつど `pnpm licenses list` で確認する |
+| リポジトリ全体 | `LICENSE`（GPLv3 全文）と `NOTICE` を直下に置く |
+
+⚠️ **AGPL のパッケージを採用しない**（`CON-LICENSE-001.130`）。
+GPLv3 はネットワーク越しの利用だけではソース提供義務が発動しないが、
+AGPL を1つでも取り込むとこの前提が崩れる。
+
+### 9.5 検証の自動化
+
+| 対象 | スクリプト |
+|---|---|
+| 型 | `pnpm typecheck` |
+| テスト | `pnpm test` |
+| Mermaid の構文 | `pnpm validate:mermaid` |
+| トレーサビリティマトリクス | `node scripts/generate-tm.mjs --both` |
+| 要求仕様の Front Matter | ⬜ `validate-requirements.mjs`（未実装） |
 
 ---
 
@@ -604,13 +940,15 @@ https://github.com/ChestnutForest/processloop/blob/main/docs/adr/adr-0003-diagra
 
 ## 未記述の章
 
-段階2と段階3で記述する。
+段階3で記述する。
 
-| 章 | 段階 | 着手の時期 |
+| 章 | 内容 | 着手の時期 |
 |---|---|---|
-| 3.4 以降の属性定義、Prisma スキーマ、CRUD図 | 2 | M1 着手前 |
-| 第5章 永続化 | 2 | M1 着手前 |
-| 6.4 構成の詳細 | 2 | M1 着手前 |
-| 第7章 API | 2 | M1 着手前 |
-| 第9章 横断的な方針 | 2 | M1 着手前 |
-| 第4章 計算式エンジン | 3 | M3 着手前 |
+| 第4章 計算式エンジン | 5層の責務と入出力、Signals と Peggy の採用範囲、ゴールデンによる検証 | **M3 着手前** |
+
+M1 と M2 ではエンジンを使わないため、設計を先に確定させる必要がない。
+移植元の5層構造の解析は [architecture-analysis.md](../architecture-analysis.md) にある。
+
+```
+https://github.com/ChestnutForest/processloop/blob/main/docs/architecture-analysis.md
+```
