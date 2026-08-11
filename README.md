@@ -40,7 +40,7 @@ PSP、TSP、Personal Software Process、Team Software Process はカーネギー
 | 要求仕様の記法 | 確定（USDM ＋ IPA 6技術領域。[記法定義](docs/phase1/req/README.md)） |
 | 要求仕様 | **6/6本**（M1 分。レビュー済み・`reviewed`） |
 | アーキテクチャ仕様書 | 段階1まで記述（[ARC](docs/phase1/arc-architecture.md)） |
-| 工程ゲート G1 | 未通過（TM の骨格が残る） |
+| 工程ゲート G1 | **通過**（要求6本 `reviewed`／ARC 段階1／TM 骨格） |
 | 実装順序 | 確定（データ収集先行。[ADR-0001](docs/adr/adr-0001-data-collection-first.md)） |
 | PSP 計測データ | A-1 を遡及登録済み。以降は M1 完成後に記録（[ADR-0002](docs/adr/adr-0002-measurement-recording.md)） |
 
@@ -59,6 +59,7 @@ processloop/
 ├─ i18n/                 多言語メッセージ（en / ja）
 ├─ docs/                 設計・移植メモ
 │   ├─ phase1/                    第1期の仕様
+│   │   ├─ traceability-matrix.md トレーサビリティマトリクス（自動生成）
 │   │   ├─ arc-architecture.md    アーキテクチャ仕様書（段階1まで記述）
 │   │   ├─ arc-outline.md         同 目次と段階分割の根拠
 │   │   └─ req/                   要求仕様（USDM・1要求1ファイル）
@@ -248,6 +249,7 @@ PROBE は過去の「見積り規模 vs 実績規模」に回帰分析をかけ�
 
 | 文書 | 内容 |
 |---|---|
+| [docs/phase1/traceability-matrix.md](docs/phase1/traceability-matrix.md) | 工程と成果物の対応表。要求の Front Matter から自動生成する |
 | [docs/phase1/arc-architecture.md](docs/phase1/arc-architecture.md) | **移植先の設計仕様。** 層構成、データモデル、画面、テスト方式。段階1まで記述 |
 | [docs/phase1/arc-outline.md](docs/phase1/arc-outline.md) | ARC の目次と3段階に分けた根拠 |
 | [docs/phase1/req/overview.md](docs/phase1/req/overview.md) | 要件定義の概要。目的・範囲・用語集・共通ルール・技術領域のカバレッジ |
