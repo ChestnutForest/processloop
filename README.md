@@ -40,7 +40,9 @@ PSP、TSP、Personal Software Process、Team Software Process はカーネギー
 | 要求仕様の記法 | 確定（USDM ＋ IPA 6技術領域。[記法定義](docs/phase1/req/README.md)） |
 | 要求仕様 | **6/6本**（M1 分。レビュー済み・`reviewed`） |
 | アーキテクチャ仕様書 | **段階2まで記述**（第4章のみ M3 着手前。[ARC](docs/phase1/arc-architecture.md)） |
-| 工程ゲート G1 | **通過**（要求6本 `reviewed`／ARC 段階1／TM 骨格） |
+| 工程ゲート G1 | **通過**（要求6本 `reviewed`／ARC 段階2／TM 骨格） |
+| 移植仕様書 | 1/18本（B-9 永続化層） |
+| M1 の実装 | 未着手（次の作業） |
 | 実装順序 | 確定（データ収集先行。[ADR-0001](docs/adr/adr-0001-data-collection-first.md)） |
 | PSP 計測データ | A-1 を遡及登録済み。以降は M1 完成後に記録（[ADR-0002](docs/adr/adr-0002-measurement-recording.md)） |
 
@@ -60,6 +62,8 @@ processloop/
 ├─ docs/                 設計・移植メモ
 │   ├─ phase1/                    第1期の仕様
 │   │   ├─ traceability-matrix.md トレーサビリティマトリクス（自動生成）
+│   │   ├─ units/                 移植仕様書（プログラム設計）
+│   │   │   └─ prt-b9-persistence.md
 │   │   ├─ arc-architecture.md    アーキテクチャ仕様書（段階2まで記述）
 │   │   ├─ arc-outline.md         同 目次と段階分割の根拠
 │   │   └─ req/                   要求仕様（USDM・1要求1ファイル）
@@ -249,6 +253,7 @@ PROBE は過去の「見積り規模 vs 実績規模」に回帰分析をかけ�
 
 | 文書 | 内容 |
 |---|---|
+| [docs/phase1/units/](docs/phase1/units/) | 移植仕様書。ユニットごとに解析・設計・テスト仕様・トレーサビリティ・実績を1本にまとめる |
 | [docs/phase1/traceability-matrix.md](docs/phase1/traceability-matrix.md) | 工程と成果物の対応表。要求の Front Matter から自動生成する |
 | [docs/phase1/arc-architecture.md](docs/phase1/arc-architecture.md) | **移植先の設計仕様。** 層構成、Prisma スキーマ、永続化、画面、API、テスト方式。段階2まで記述 |
 | [docs/phase1/arc-outline.md](docs/phase1/arc-outline.md) | ARC の目次と3段階に分けた根拠 |
