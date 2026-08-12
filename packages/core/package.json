@@ -9,7 +9,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./preprocessor": "./src/preprocessor/index.ts",
-    "./persistence": "./src/persistence/index.ts"
+    "./persistence": "./src/persistence/index.ts",
+    "./hierarchy": "./src/hierarchy/index.ts"
   },
   "scripts": {
     "test": "vitest run",

@@ -1,3 +1,4 @@
 unit,estimated_loc,actual_loc,est_date,complete_date,note
 A-1,300,315,2026-07-19,2026-07-20,見積りは250〜350行の範囲。中央値300を採用
 B-9,250,517,2026-08-11,,完了日は devlog からの遡及抽出待ち（ADR-0002）。hierarchy.ts の cascadePathRename が見積りを大きく超えた
+B-2,400,379,2026-08-12,,完了日は devlog からの遡及抽出待ち（ADR-0002）。B-9 の乖離を踏まえて見積もり直した結果、見積り内に収まった
