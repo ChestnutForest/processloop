@@ -27,14 +27,15 @@ PSP、TSP、Personal Software Process、Team Software Process はカーネギー
 
 ## 現在の状態
 
-**移植の実装フェーズ。計算式エンジンの第1層が完成している。**
+**移植の実装フェーズ。計算式エンジンの第1層と永続化層が完成している。**
 
 | 項目 | 状態 |
 |---|---|
 | 移植着手前の調査 | 完了（構造調査 33.7%、主要な設計判断はすべて確定） |
 | 開発環境 | 完了（Node 24 / pnpm ワークスペース / Vitest） |
 | **A-1（プリプロセッサ）** | **完了**（TypeScript 315行、テスト22件） |
-| M1（データ収集の最小構成） | 未着手（次の作業） |
+| **B-9（永続化層）** | **完了**（Prisma + SQLite、TypeScript 517行、テスト16件） |
+| M1（データ収集の最小構成） | 着手（B-9 完了。次は B-2 階層 / B-4 時間ログ） |
 | frontend | 未初期化（M1 に含む） |
 | 開発プロセスの定義 | 議論中（[成果物提案](docs/deliverables-proposal.md) 参照） |
 | 要求仕様の記法 | 確定（USDM ＋ IPA 6技術領域。[記法定義](docs/phase1/req/README.md)） |
@@ -42,12 +43,12 @@ PSP、TSP、Personal Software Process、Team Software Process はカーネギー
 | アーキテクチャ仕様書 | **段階2まで記述**（第4章のみ M3 着手前。[ARC](docs/phase1/arc-architecture.md)） |
 | 工程ゲート G1 | **通過**（要求6本 `reviewed`／ARC 段階2／TM 骨格） |
 | 移植仕様書 | 1/18本（B-9 永続化層） |
-| M1 の実装 | 未着手（次の作業） |
+| M1 の実装 | 着手（B-9 完了） |
 | 実装順序 | 確定（データ収集先行。[ADR-0001](docs/adr/adr-0001-data-collection-first.md)） |
-| PSP 計測データ | A-1 を遡及登録済み。以降は M1 完成後に記録（[ADR-0002](docs/adr/adr-0002-measurement-recording.md)） |
+| PSP 計測データ | A-1・B-9 を遡及登録済み。以降は M1 完成後に記録（[ADR-0002](docs/adr/adr-0002-measurement-recording.md)） |
 
 第1期スコープは「個人利用の PSP 機能 ＋ PROBE ＋ EV」で、実装見積りは **19,000〜21,000行**（18ユニットの積み上げ）。
-現在1ユニットが完了している。
+現在2ユニットが完了している。
 
 ---
 
@@ -56,7 +57,10 @@ PSP、TSP、Personal Software Process、Team Software Process はカーネギー
 ```
 processloop/
 ├─ packages/core/        UI 非依存のドメインロジック（移植の主戦場）
-│   └─ src/preprocessor/ A-1: プリプロセッサ（実装済み）
+│   ├─ prisma/           B-9: Prisma スキーマとマイグレーション（実装済み）
+│   └─ src/
+│       ├─ preprocessor/ A-1: プリプロセッサ（実装済み）
+│       └─ persistence/  B-9: 永続化層（実装済み）
 ├─ frontend/             Next.js アプリケーション（未初期化）
 ├─ i18n/                 多言語メッセージ（en / ja）
 ├─ docs/                 設計・移植メモ

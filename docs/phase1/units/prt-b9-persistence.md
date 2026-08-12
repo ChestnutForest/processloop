@@ -8,7 +8,7 @@ requirements:
   - NFR-DATA-001
 milestone: M1
 estimated_loc: 250
-actual_loc: null
+actual_loc: 517
 source:
   upstream_sha: bf5a4d63aff08410f79840001c816b37392e5001
   files:
@@ -342,22 +342,24 @@ process.env.DATABASE_URL = 'file:./test.db?mode=memory&cache=shared';
 | 項目 | 値 |
 |---|---|
 | 見積り行数 | **250** |
-| 実績行数 | ⬜ 未記入 |
+| 実績行数 | **517** |
 | 見積り日 | 2026-08-11 |
 | 完了日 | ⬜ 未記入 |
 | 所要時間 | ⬜ 未記入 |
 | 欠陥 | ⬜ 未記入 |
 
+⚠️ **完了日・所要時間・欠陥は手動で記入しない。** ADR-0002 により devlog から遡及抽出する。
+
 ### 見積りの内訳
 
-| ファイル | 行数 |
-|---|---|
-| `prisma/schema.prisma` | 60 |
-| `client.ts` | 20 |
-| `types.ts` | 50 |
-| `hierarchy.ts` | 80 |
-| `time-log.ts` | 40 |
-| `index.ts` | 10 |
+| ファイル | 見積り行数 | 実績行数 |
+|---|---|---|
+| `prisma/schema.prisma` | 60 | 50 |
+| `client.ts` | 20 | 28 |
+| `types.ts` | 50 | 98 |
+| `hierarchy.ts` | 80 | 228 |
+| `time-log.ts` | 40 | 97 |
+| `index.ts` | 10 | 16 |
 
 ⚠️ **テストコードは行数に含めない。** A-1 でも実装315行に対しテストは別に数えた。
 

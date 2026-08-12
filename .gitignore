@@ -17,6 +17,10 @@ coverage/
 .DS_Store
 Thumbs.db
 
+# SQLite（開発用データベース）
+*.db
+*.db-journal
+
 # 移植元 Java（141MB・ローカル参照のみ。リポジトリには含めない）
 reference/legacy-java/*
 !reference/legacy-java/README.md
