@@ -123,17 +123,8 @@ export interface RemovalImpact {
   readonly totalInterrupt: number;
 }
 
-/** プロセス定義。B-3 から受け取る。 */
-export interface ProcessDefinition {
-  readonly id: string;
-  readonly name: string;
-  readonly phases: readonly PhaseDefinition[];
-}
-
-export interface PhaseDefinition {
-  readonly name: string;
-  readonly type: PhaseType;
-}
+/** プロセス定義は B-3 が公開する型を使用する。 */
+import type { ProcessDefinition } from '../process';
 ```
 
 ⚠️ **`RemovalImpact` が本ユニットの要である。** 削除を実行せず、
@@ -304,12 +295,12 @@ B-9 と同じ構成を使う。`vitest.global-setup.ts` がスキーマを1回�
 | 対象 | 関係 |
 |---|---|
 | B-9 永続化層 | **前提**。実装済み |
-| B-3 プロセス定義 | `ProcessDefinition` を受け取る。**未実装** |
+| B-3 プロセス定義 | `ProcessDefinition` と PSP2 定義を受け取る。**実装済み** |
 | B-4 時間ログ | `timeLog.create` を呼ぶ側。本ユニットは読むのみ |
 | C 画面 | 本ユニットを呼ぶ |
 
-⚠️ **B-3 が未実装のため、テストでは `ProcessDefinition` を手で組み立てる。**
-PSP2 の8フェーズを定数として持つ形にし、B-3 完成後に差し替える。
+**B-3 完成時に差し替え済み。** `ProcessDefinition` は `../process` から取得し、
+テストでは `findDefinition('PSP2')` が返す定義を使用する。
 
 ---
 
@@ -374,3 +365,5 @@ https://github.com/ChestnutForest/processloop/blob/main/docs/phase1/units/prt-b9
 ```
 https://github.com/ChestnutForest/processloop/blob/main/docs/phase1/arc-architecture.md
 ```
+
+

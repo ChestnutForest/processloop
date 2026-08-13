@@ -21,32 +21,15 @@
 /**
  * プロセス定義の割り当てとフェーズ展開。
  *
- * B-3（プロセス定義の読み込み）は未実装のため、`PSP2_DEFINITION` を
- * `Templates/PSP-template.xml` の代わりの定数として用意する
- * （docs/phase1/units/prt-b2-hierarchy.md 4章「依存」）。
- * B-3 完成後は、そちらが読み取った `ProcessDefinition` に差し替える。
+ * `ProcessDefinition` は B-3（プロセス定義の読み込み）から受け取る
+ * （docs/phase1/units/prt-b3-process.md 4章「B-2 との差し替え」）。
  */
 
 import { hierarchy } from '../persistence';
+import type { ProcessDefinition } from '../process';
 import { requireNodeByPath } from './node';
 import { toTreeNode } from './tree';
-import type { ProcessDefinition, TreeNode } from './types';
-
-/** PSP2 のフェーズ構成（`docs/phase1/req/fr-hier-001.md` 「PSP2 のフェーズ構成」）。 */
-export const PSP2_DEFINITION: ProcessDefinition = {
-  id: 'PSP2',
-  name: 'PSP2',
-  phases: [
-    { name: 'Planning', type: 'plan' },
-    { name: 'Design', type: 'dld' },
-    { name: 'Design Review', type: 'dldr' },
-    { name: 'Code', type: 'code' },
-    { name: 'Code Review', type: 'cr' },
-    { name: 'Compile', type: 'comp' },
-    { name: 'Test', type: 'ut' },
-    { name: 'Postmortem', type: 'pm' },
-  ],
-};
+import type { TreeNode } from './types';
 
 /** 定義が持つフェーズを、対象ノードの子として定義の順に作成する（FR-HIER-001.410 `.420`）。 */
 async function expandPhases(nodeId: number, definition: ProcessDefinition): Promise<void> {

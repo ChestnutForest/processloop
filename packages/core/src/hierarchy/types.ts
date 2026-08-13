@@ -31,18 +31,6 @@ export interface RemovalImpact {
   readonly totalInterrupt: number;
 }
 
-/** プロセス定義。B-3（未実装）から受け取る想定の型。 */
-export interface ProcessDefinition {
-  readonly id: string;
-  readonly name: string;
-  readonly phases: readonly PhaseDefinition[];
-}
-
-export interface PhaseDefinition {
-  readonly name: string;
-  readonly type: PhaseType;
-}
-
 /** ノード名が空、201文字以上、または `/` を含むときに投げる（FR-HIER-001.10 `.30`）。 */
 export class InvalidNameError extends Error {
   constructor(readonly invalidName: string) {
