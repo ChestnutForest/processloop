@@ -104,7 +104,8 @@ processloop/
 │       └─ prompt-history.md      全プロンプト・回答の時系列一覧
 ├─ reference/legacy-java/ 移植元 Java の参照資料（Git 追跡対象外）
 │   └─ README.md          上流ピン・取り扱い原則・ライセンス注意
-├─ CLAUDE.md              Claude Code 向けのプロジェクト規約
+├─ AGENTS.md              AI 開発エージェント向けの共通プロジェクト規約
+├─ CLAUDE.md              Claude Code から共通規約を読み込む入口
 ├─ LICENSE                GPLv3 全文
 ├─ NOTICE                 帰属・追加許諾・サービスマーク
 └─ package.json           pnpm ワークスペースのルート
@@ -282,7 +283,8 @@ PROBE は過去の「見積り規模 vs 実績規模」に回帰分析をかけ�
 | [docs/psp-data/](docs/psp-data/) | この開発自体の PSP 計測データ。規模・欠陥・作業時間。完成後に Processloop へ投入する |
 | [docs/history/prompt-history.md](docs/history/prompt-history.md) | 開発経緯の時系列記録 |
 | [reference/legacy-java/README.md](reference/legacy-java/README.md) | 移植元の取り扱い、上流ピン、ゴールデンファイル生成手順 |
-| [CLAUDE.md](CLAUDE.md) | Claude Code 向けの規約。最優先の3点、環境、作業順序、確定済みの設計判断、コミットの作法 |
+| [AGENTS.md](AGENTS.md) | Codex が自動で読み込む共通規約。最優先の3点、環境、作業順序、確定済みの設計判断、コミットの作法 |
+| [CLAUDE.md](CLAUDE.md) | Claude Code から `AGENTS.md` の共通規約を読み込む入口 |
 | [NOTICE](NOTICE) | 帰属、追加許諾、変更履歴、サービスマーク |
 
 ---
