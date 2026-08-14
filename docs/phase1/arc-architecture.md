@@ -215,14 +215,15 @@ pnpm を選ぶ理由は、npm の巻き上げによる**幽霊依存**（package
 
 ### 3.1 エンティティ一覧
 
-第1期で扱うのは4つである。
+第1期で扱うのは5つである。
 
 | # | エンティティ | 役割 | M1 | 移植元の対応 |
 |---|---|---|---|---|
 | 1 | **HierarchyNode** | プロジェクトの階層。タスクとフェーズ | ✅ | `state` ファイル（XML） |
 | 2 | **TimeLogEntry** | 作業時間の記録 | ✅ | `timelog.xml` |
-| 3 | **Defect** | 欠陥の記録 | M2 | `*.def` |
-| 4 | **DataValue** | 計算式が扱う値 | ⚠️ M3 | `*.dat` |
+| 3 | **ActiveTimeSession** | 未終了の計測状態と復旧用チェックポイント | ✅ | 現在行の定期保存 |
+| 4 | **Defect** | 欠陥の記録 | M2 | `*.def` |
+| 5 | **DataValue** | 計算式が扱う値 | ⚠️ M3 | `*.dat` |
 
 ⚠️ **`DataValue` は M3 で確定する。** 計算式エンジンが扱う値を保持するモデルであり、
 エンジンの設計に依存する。M1 と M2 では使用しない。
@@ -240,6 +241,7 @@ https://github.com/ChestnutForest/processloop/blob/main/docs/architecture-analys
 erDiagram
     HierarchyNode ||--o{ HierarchyNode : "親子"
     HierarchyNode ||--o{ TimeLogEntry : "計測される"
+    HierarchyNode ||--o| ActiveTimeSession : "計測中"
     HierarchyNode ||--o{ Defect : "記録される"
     HierarchyNode ||--o{ DataValue : "値を持つ"
 
@@ -257,6 +259,17 @@ erDiagram
         datetime start
         int delta
         int interrupt
+    }
+    ActiveTimeSession {
+        int id PK
+        int nodeId FK
+        string path
+        datetime start
+        string state
+        bigint workMillis
+        bigint interruptMillis
+        datetime stateChangedAt
+        int version
     }
     Defect {
         int id PK
@@ -281,6 +294,7 @@ erDiagram
 erDiagram
     HierarchyNode ||--o{ HierarchyNode : "親子"
     HierarchyNode ||--o{ TimeLogEntry : "計測される"
+    HierarchyNode ||--o| ActiveTimeSession : "計測中"
     HierarchyNode ||--o{ Defect : "記録される"
     HierarchyNode ||--o{ DataValue : "値を持つ"
 
@@ -298,6 +312,17 @@ erDiagram
         datetime start
         int delta
         int interrupt
+    }
+    ActiveTimeSession {
+        int id PK
+        int nodeId FK
+        string path
+        datetime start
+        string state
+        bigint workMillis
+        bigint interruptMillis
+        datetime stateChangedAt
+        int version
     }
     Defect {
         int id PK
@@ -381,14 +406,40 @@ https://github.com/ChestnutForest/processloop/blob/main/docs/phase1/req/fr-hier-
 | 1 | id | Int | — | ✅ | 自動採番 | 主キー |
 | 2 | nodeId | Int | — | ✅ | 外部キー | 対象ノード |
 | 3 | path | String | 1000 | ✅ | — | 記録時点の階層パス |
-| 4 | start | DateTime | — | ✅ | 未来時刻を許さない | 計測開始 |
+| 4 | start | DateTime | — | ✅ | 通常操作ではサーバが生成 | 計測開始 |
 | 5 | delta | Int | — | ✅ | 0以上 | **正味時間（分）** |
-| 6 | interrupt | Int | — | ✅ | 0以上 `delta` 以下 | **中断時間（分）** |
+| 6 | interrupt | Int | — | ✅ | 0以上。`delta` を超えてよい | **中断時間（分）** |
 | 7 | comment | String | 1000 | | — | コメント |
 | 8 | createdAt | DateTime | — | ✅ | — | 記録日時 |
 
 **`path` を外部キーと併せて持つ理由**は2つある。移植元が `path` で結ぶ設計であり
 既存データの移行時に対応が取れること、そしてノード名の変更前の位置を保てることである。
+
+通常操作では `start`、`delta`、`interrupt` を利用者から直接受け取らず、
+`ActiveTimeSession` の状態遷移から生成する。移行処理は別境界とし、移植元に存在しうる
+未来時刻、負数、`interrupt > delta`、0分、親ノードの記録を警告だけで保持できるようにする。
+
+#### ActiveTimeSession
+
+未終了の計測をブラウザ外へ保存する復旧用エンティティである。個人利用のM1では
+同時に1件だけ保持し、固定主キーと一意制約で二重計測を防ぐ。
+
+| # | 属性 | 型 | 必須 | 説明 |
+|---|---|---|---|---|
+| 1 | id | Int | ✅ | 固定値 `1`。同時に1件だけ存在する |
+| 2 | nodeId | Int | ✅ | 対象ノード |
+| 3 | path | String | ✅ | 計測開始時点の階層パス |
+| 4 | start | DateTime | ✅ | サーバが生成したUTC開始時刻 |
+| 5 | state | String | ✅ | `running` または `paused` |
+| 6 | workMillis | BigInt | ✅ | 確定済み作業区間のミリ秒 |
+| 7 | interruptMillis | BigInt | ✅ | 確定済み中断区間のミリ秒 |
+| 8 | stateChangedAt | DateTime | ✅ | 現在区間の開始を示すサーバ時刻 |
+| 9 | version | Int | ✅ | 競合更新を検出する楽観ロック値 |
+| 10 | updatedAt | DateTime | ✅ | 最新チェックポイントのサーバ時刻 |
+
+正式な時間ログは分単位だが、チェックポイントでは丸め前のミリ秒を保持する。
+これにより1分ごとの保存で端数が失われることを防ぐ。APIではJavaScriptの安全な
+整数範囲を超える可能性を避けるため、BigIntのミリ秒値を10進文字列として表現する。
 
 #### Defect（M2）
 
@@ -443,6 +494,7 @@ model HierarchyNode {
   children   HierarchyNode[] @relation("Tree")
 
   timeLog    TimeLogEntry[]
+  activeTimeSession ActiveTimeSession?
 
   @@unique([parentId, name])
   @@index([path])
@@ -463,6 +515,22 @@ model TimeLogEntry {
   @@index([path])
   @@index([start])
 }
+
+model ActiveTimeSession {
+  id              Int      @id
+  nodeId          Int      @unique
+  node            HierarchyNode @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+  path            String
+  start           DateTime
+  state           String
+  workMillis      BigInt   @default(0)
+  interruptMillis BigInt   @default(0)
+  stateChangedAt  DateTime
+  version         Int      @default(1)
+  updatedAt       DateTime @updatedAt
+
+  @@index([path])
+}
 ```
 
 **設計上の判断**
@@ -474,6 +542,8 @@ model TimeLogEntry {
 | `onDelete: Cascade` | ⚠️ フェーズ削除時に時間ログも消える。`FR-HIER-001.350` に対応する |
 | `interrupt` に既定値 0 | 中断なしが通常であるため |
 | `start` に索引 | 期間での絞り込み（第1.5期）に備える |
+| `ActiveTimeSession.id` を固定値1にする | 個人利用のM1で同時実行を1件に限定する |
+| 積算ミリ秒を `BigInt` にする | 32ビット整数の上限で長時間セッションを切り捨てない |
 
 ⚠️ **`onDelete: Cascade` は慎重に扱う。** 確認なしに削除されると記録が失われる。
 削除の前に件数と合計時間を示して確認を求める処理は、
@@ -682,7 +752,8 @@ frontend/
 | 状態 | 保持先 |
 |---|---|
 | 画面をまたぐ業務データ | サーバ（Route Handlers 経由で取得） |
-| 計測中の経過時間 | React の `useState` |
+| 計測中の表示値 | React の `useState`。単調時計から1秒ごとに再計算 |
+| 未終了の計測状態 | サーバの `ActiveTimeSession`。操作時と通常1分間隔で保存 |
 | 選択中の言語 | next-intl と `localStorage` |
 
 ⚠️ M3 で `@preact/signals-core` を `packages/core` に導入するが、
@@ -723,12 +794,23 @@ i18n/messages/
 | DELETE | `/api/nodes/{id}` | `FR-HIER-001.340` `.350` |
 | GET | `/api/time-log` | `FR-SUM-001.110` |
 | POST | `/api/time-log` | `FR-TIME-001.510` |
+| GET | `/api/time-session` | `FR-TIME-001.620` |
+| POST | `/api/time-session/start` | `FR-TIME-001.110` `.140` |
+| POST | `/api/time-session/pause` | `FR-TIME-001.310` |
+| POST | `/api/time-session/resume` | `FR-TIME-001.310` `.320` |
+| PUT | `/api/time-session/checkpoint` | `FR-TIME-001.610` |
+| POST | `/api/time-session/stop` | `FR-TIME-001.330` `.510` `.630` |
 | GET | `/api/summary` | `FR-SUM-001` |
 | GET | `/api/processes` | `FR-HIER-001.310` |
 
-⚠️ **計測の開始と終了に API を設けない。** 経過時間は画面側で保持し、
-**終了時に1件を POST する**（`FR-TIME-001.510`）。
-計測中に毎秒サーバへ送ると、無用な負荷と障害点が生じる。
+計測の状態遷移は専用APIを通し、サーバ時刻と単一の `ActiveTimeSession` を正本とする。
+画面は表示だけを1秒ごとに更新し、サーバへは開始・中断・再開・終了時と通常1分間隔で送る。
+毎秒書き込まず、ブラウザ障害時にも計測全体を失わない間隔とする。
+
+新しい開始要求を受けた時点で既存セッションがあれば、そのサーバ受信時刻を終了時刻として
+既存セッションを正式ログへ変換してから新規セッションを作る。更新APIは `version` を要求し、
+古いブラウザからの遅延更新を409で拒否する。終了処理ではログ作成とセッション削除を
+同じトランザクションで行う。正味時間が1分未満ならログを作らず、セッションだけ削除する。
 
 ### 7.3 OpenAPI で別管理する
 
@@ -861,10 +943,17 @@ https://github.com/ChestnutForest/processloop/blob/main/docs/phase1/req/_schema/
 | データベース | UTC で保持する |
 | API の入出力 | ISO 8601。タイムゾーンを含める |
 | 画面の表示 | 実行環境のタイムゾーンへ変換する |
-| 時間の単位 | 分。秒以下は切り捨てる |
+| 正味時間の保存 | 分。作業区間の合計を四捨五入する |
+| 中断時間の保存 | 分。分未満を切り捨てる |
+| 計測中の内部値 | ミリ秒。表示中の区間は単調時計で測る |
 
-**計測の経過時間だけは秒まで表示する**（`FR-TIME-001.210`）。
-記録するのは分単位だが、計測中の表示は秒があるほうが動作が分かる。
+**計測中の正味作業時間だけは秒まで表示する**（`FR-TIME-001.210`）。
+中断中は正味作業時間を止め、中断時間だけを進める。総経過時間は別表示しない。
+
+開始時刻と状態遷移時刻はサーバの壁時計を正本とするため、クライアントが未来時刻を
+送るAPIを設けない。画面を開いている間の区間計測には `performance.now()` 相当の
+単調時計を使い、時計補正による負の継続時間を防ぐ。再読み込み後はサーバの
+`stateChangedAt` と受信時刻から現在区間を復元し、その後の表示を単調時計へ切り替える。
 
 ### 9.4 ライセンス順守
 
