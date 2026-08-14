@@ -268,11 +268,16 @@ A-1（プリプロセッサ）は `CppFilter.main()` を単独実行できたた
 
 ### テスト環境
 
-インメモリの SQLite を使い、テストごとにスキーマを作り直す。
+全テストファイルでSQLiteの`packages/core/prisma/test.db`を共有する。
+`prisma db push`のCLI起動には時間がかかるため、Vitestの`globalSetup`から
+実行全体で1回だけスキーマを投入する。各テストの`beforeEach`では全テーブルの行だけを削除する。
 
 ```typescript
-process.env.DATABASE_URL = 'file:./test.db?mode=memory&cache=shared';
+process.env.DATABASE_URL = 'file:./test.db';
 ```
+
+共有DBへの同時操作を避けるため、`vitest.config.ts`の`fileParallelism`を`false`にして
+テストファイルを逐次実行する。構成と実行方法の詳細は[テストガイド](../../testing-guide.md)を参照する。
 
 ### テストケース
 

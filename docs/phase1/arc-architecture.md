@@ -878,6 +878,10 @@ https://github.com/ChestnutForest/processloop/blob/main/reference/legacy-java/RE
 | 型検査 | TypeScript（strict ＋ `noUncheckedIndexedAccess`） |
 | Mermaid の構文検証 | `scripts/validate-mermaid.mjs` |
 
+Vitestの実行経路、共有SQLiteの初期化、結果の読み方、整合性テストの考え方は
+[テストガイド](../testing-guide.md)にまとめる。本章はテスト戦略と境界を正本とし、
+個々の操作手順や概念解説はガイドから参照する。
+
 ⚠️ Playwright MCP の採用可否は未決である。**再現可能なテストコードとして残す**ことが
 目的であるため、通常の Playwright を基本とし、MCP は開発中の対話的な確認に
 補助的に使う位置づけを想定する。

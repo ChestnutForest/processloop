@@ -45,7 +45,7 @@ PSP、TSP、Personal Software Process、Team Software Process はカーネギー
 | アーキテクチャ仕様書 | **段階2まで記述**（第4章のみ M3 着手前。[ARC](docs/phase1/arc-architecture.md)） |
 | 工程ゲート G1 | **通過**（要求6本 `reviewed`／ARC 段階2／TM 骨格） |
 | 移植仕様書 | 4/18本（B-9 永続化層・B-2 階層・B-3 プロセス定義・B-4 時間ログ） |
-| テスト | **合計99件**（うちB-4第1・第2段階21件） |
+| テスト | **合計99件**（うちB-4第1・第2段階21件。[Vitest・整合性テストのガイド](docs/testing-guide.md)） |
 | 実装順序 | 確定（データ収集先行。[ADR-0001](docs/adr/adr-0001-data-collection-first.md)） |
 | PSP 計測データ | A-1、B-9、B-2、B-3、B-4第1・第2段階まで規模を記録済み（[ADR-0002](docs/adr/adr-0002-measurement-recording.md)） |
 
@@ -95,6 +95,7 @@ processloop/
 │   │       ├─ diagram-guide.md   図表の書き方（工程成果物ごと）
 │   │       └─ ipa-integration-proposal.md  IPA ガイド統合の設計と経緯
 │   ├─ references.md              根拠とした一次情報の URL 一覧
+│   ├─ testing-guide.md           Vitestの実行方法と楽観ロック・原子性テストの解説
 │   ├─ architecture-analysis.md   移植元のプログラム構造 解析報告
 │   ├─ deliverables-proposal.md   フェーズ別 成果物提案（議論中）
 │   ├─ dogfooding-roadmap.md      実装順序（M1〜M6）
@@ -283,6 +284,7 @@ PROBE は過去の「見積り規模 vs 実績規模」に回帰分析をかけ�
 | [docs/phase1/req/ipa-integration-proposal.md](docs/phase1/req/ipa-integration-proposal.md) | IPA「機能要件の合意形成ガイド」の6技術領域を USDM に統合した設計と、決定の経緯 |
 | [docs/phase1/req/review-checklist.md](docs/phase1/req/review-checklist.md) | 要求仕様のレビュー観点30項目。合意成熟度の移行時に使う |
 | [docs/phase1/req/diagram-guide.md](docs/phase1/req/diagram-guide.md) | 図表の書き方。工程成果物ごとに Mermaid と Markdown 表を使い分ける |
+| [docs/testing-guide.md](docs/testing-guide.md) | Vitestの実行経路、共有SQLiteのテスト環境、結果の読み方、楽観ロックとトランザクション原子性の検証方法 |
 | [docs/references.md](docs/references.md) | 根拠とした一次情報。USDM の小冊子、IPA 機能要件の合意形成ガイド全7編、発注者ビューガイドラインの系譜、使用条件 |
 | [docs/architecture-analysis.md](docs/architecture-analysis.md) | 移植元のプログラム構造の解析。計算式エンジンの5層構造、永続化の4系統、ライセンス構造、調査カバレッジ |
 | [docs/deliverables-proposal.md](docs/deliverables-proposal.md) | **議論中。** フェーズごとに作成するドキュメント・コード・リソースの提案。18ユニットの定義、工程ゲート、トレーサビリティマトリクスの構造 |
