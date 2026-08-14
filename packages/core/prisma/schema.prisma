@@ -1,7 +1,7 @@
 // Processloop - a Next.js port of Process Dashboard
 // Copyright (C) 2026 Kazuyuki Kuribayashi
 //
-// M1 で必要な2モデルのみを定義する。Defect と DataValue は各マイルストーンで追加する。
+// M1 で必要な3モデルのみを定義する。Defect と DataValue は各マイルストーンで追加する。
 // 定義の根拠は docs/phase1/arc-architecture.md 3.6。
 
 datasource db {
@@ -23,28 +23,45 @@ model HierarchyNode {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  parentId   Int?
-  parent     HierarchyNode?  @relation("Tree", fields: [parentId], references: [id])
-  children   HierarchyNode[] @relation("Tree")
+  parentId Int?
+  parent   HierarchyNode?  @relation("Tree", fields: [parentId], references: [id])
+  children HierarchyNode[] @relation("Tree")
 
-  timeLog    TimeLogEntry[]
+  timeLog           TimeLogEntry[]
+  activeTimeSession ActiveTimeSession?
 
   @@unique([parentId, name])
   @@index([path])
 }
 
 model TimeLogEntry {
-  id        Int      @id @default(autoincrement())
+  id        Int           @id @default(autoincrement())
   nodeId    Int
   node      HierarchyNode @relation(fields: [nodeId], references: [id], onDelete: Cascade)
   path      String
   start     DateTime
   delta     Int
-  interrupt Int      @default(0)
+  interrupt Int           @default(0)
   comment   String?
-  createdAt DateTime @default(now())
+  createdAt DateTime      @default(now())
 
   @@index([nodeId])
   @@index([path])
   @@index([start])
+}
+
+model ActiveTimeSession {
+  id              Int           @id
+  nodeId          Int           @unique
+  node            HierarchyNode @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+  path            String
+  start           DateTime
+  state           String
+  workMillis      BigInt        @default(0)
+  interruptMillis BigInt        @default(0)
+  stateChangedAt  DateTime
+  version         Int           @default(1)
+  updatedAt       DateTime      @updatedAt
+
+  @@index([path])
 }

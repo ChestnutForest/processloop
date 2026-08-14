@@ -13,8 +13,8 @@
  */
 
 import { execSync } from 'node:child_process';
-import { existsSync, rmSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { existsSync, rmSync, writeFileSync } from 'node:fs';
+import { dirname, isAbsolute, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { getClient } from './client';
 
@@ -28,6 +28,16 @@ export const TEST_DATABASE_URL = 'file:./test.db';
 
 /** 指定した DATABASE_URL に対してスキーマを反映する。 */
 export function pushSchemaTo(databaseUrl: string): void {
+  // Prisma 6.19のschema engineは、存在しないSQLiteファイルへdb pushすると
+  // P1003になる。移植元の「ファイルがなければ作る」挙動と既存テストを保つため、
+  // スキーマ適用前に空ファイルを用意する。
+  if (databaseUrl.startsWith('file:')) {
+    const databaseName = databaseUrl.slice('file:'.length);
+    const databasePath = isAbsolute(databaseName)
+      ? databaseName
+      : resolve(dirname(schemaPath), databaseName);
+    if (!existsSync(databasePath)) writeFileSync(databasePath, '');
+  }
   execSync(`npx --no-install prisma db push --skip-generate --schema="${schemaPath}"`, {
     cwd: packageRoot,
     env: { ...process.env, DATABASE_URL: databaseUrl },
@@ -44,6 +54,7 @@ export function pushSchema(): void {
 /** 全テーブルの行を削除する。テストごとに呼び、状態を独立させる。 */
 export async function clearTables(): Promise<void> {
   const client = getClient();
+  await client.activeTimeSession.deleteMany();
   await client.timeLogEntry.deleteMany();
   await client.hierarchyNode.deleteMany();
 }

@@ -28,6 +28,7 @@ depends_on:
 test_refs:
   - UT-B4
   - IT-01
+  - IT-02
 ---
 
 # FR-TIME-001 作業時間を計測して時間ログに記録する

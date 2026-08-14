@@ -96,3 +96,11 @@ export class NodeNotFoundError extends Error {
     this.name = 'NodeNotFoundError';
   }
 }
+
+/** 未終了の計測状態が存在しないときに投げる。 */
+export class ActiveTimeSessionNotFoundError extends Error {
+  constructor() {
+    super('未終了の時間計測セッションが見つからない');
+    this.name = 'ActiveTimeSessionNotFoundError';
+  }
+}

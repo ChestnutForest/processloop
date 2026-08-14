@@ -467,7 +467,7 @@ https://github.com/ChestnutForest/processloop/blob/main/docs/phase1/req/fr-hier-
 
 ### 3.6 Prisma スキーマ
 
-M1 で必要な2モデルを示す。`Defect` と `DataValue` は各マイルストーンで追加する。
+M1 で必要な3モデルを示す。`Defect` と `DataValue` は各マイルストーンで追加する。
 
 ```prisma
 datasource db {

@@ -12,5 +12,6 @@
 
 export * as hierarchy from './hierarchy';
 export * as timeLog from './time-log';
+export * as timeSession from './time-session';
 export * from './types';
 export { getClient, disconnect } from './client';
