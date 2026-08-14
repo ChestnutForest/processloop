@@ -36,6 +36,7 @@ PSP、TSP、Personal Software Process、Team Software Process はカーネギー
 | **A-1（プリプロセッサ）** | **完了**（TypeScript 315行、テスト22件） |
 | B-4（時間ログ）の移植元解析 | **完了**（[ANA-B4](docs/analysis/ana-b4.md)） |
 | B-4（時間ログ）の移植設計 | **完了**（[PRT-B4](docs/phase1/units/prt-b4-time-log.md)。確認事項を確定） |
+| B-4（時間ログ）の実装 | **第1段階完了**（UI非依存の計算・状態遷移435行、単体テスト13件。B-4全体は未完了） |
 | M1（データ収集の最小構成） | **実装中（3/7：B-9、B-2、B-3 完了）** |
 | frontend | 未初期化（M1 に含む） |
 | 開発プロセスの定義 | 議論中（[成果物提案](docs/deliverables-proposal.md) 参照） |
@@ -44,7 +45,7 @@ PSP、TSP、Personal Software Process、Team Software Process はカーネギー
 | アーキテクチャ仕様書 | **段階2まで記述**（第4章のみ M3 着手前。[ARC](docs/phase1/arc-architecture.md)） |
 | 工程ゲート G1 | **通過**（要求6本 `reviewed`／ARC 段階2／TM 骨格） |
 | 移植仕様書 | 4/18本（B-9 永続化層・B-2 階層・B-3 プロセス定義・B-4 時間ログ） |
-| テスト | **合計78件** |
+| テスト | **合計91件**（うちB-4第1段階13件） |
 | 実装順序 | 確定（データ収集先行。[ADR-0001](docs/adr/adr-0001-data-collection-first.md)） |
 | PSP 計測データ | A-1、B-9、B-2、B-3 まで記録済み（[ADR-0002](docs/adr/adr-0002-measurement-recording.md)） |
 
@@ -62,7 +63,8 @@ processloop/
 │       ├─ preprocessor/ A-1: プリプロセッサ（実装済み）
 │       ├─ persistence/  B-9: 永続化層（実装済み）
 │       ├─ hierarchy/    B-2: 階層（実装済み）
-│       └─ process/      B-3: プロセス定義（実装済み）
+│       ├─ process/      B-3: プロセス定義（実装済み）
+│       └─ time-log/     B-4: 時間計算・セッション状態遷移（第1段階）
 ├─ frontend/             Next.js アプリケーション（未初期化）
 ├─ i18n/                 多言語メッセージ（en / ja）
 ├─ docs/                 設計・移植メモ
@@ -272,7 +274,7 @@ PROBE は過去の「見積り規模 vs 実績規模」に回帰分析をかけ�
 | [docs/analysis/ana-b4.md](docs/analysis/ana-b4.md) | B-4 時間ログの状態遷移、時間計算、中断、丸め、保存形式に関する移植元の解析レポート |
 | [docs/phase1/units/](docs/phase1/units/) | 移植仕様書。ユニットごとに解析・設計・テスト仕様・トレーサビリティ・実績を1本にまとめる |
 | [docs/phase1/units/prt-b3-process.md](docs/phase1/units/prt-b3-process.md) | B-3 プロセス定義の読み込みに関する移植仕様書 |
-| [docs/phase1/units/prt-b4-time-log.md](docs/phase1/units/prt-b4-time-log.md) | B-4 時間ログの計測、チェックポイント、復元、競合制御に関する移植仕様書 |
+| [docs/phase1/units/prt-b4-time-log.md](docs/phase1/units/prt-b4-time-log.md) | B-4 時間ログの計測、チェックポイント、復元、競合制御に関する移植仕様書。UI非依存の第1段階を実装済み |
 | [docs/phase1/traceability-matrix.md](docs/phase1/traceability-matrix.md) | 工程と成果物の対応表。要求の Front Matter から自動生成する |
 | [docs/phase1/arc-architecture.md](docs/phase1/arc-architecture.md) | **移植先の設計仕様。** 層構成、Prisma スキーマ、永続化、画面、API、テスト方式。段階2まで記述 |
 | [docs/phase1/arc-outline.md](docs/phase1/arc-outline.md) | ARC の目次と3段階に分けた根拠 |
