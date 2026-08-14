@@ -44,7 +44,7 @@ Mermaid の Requirement Diagram は要求どうしの関係を表す記法であ
 | [`CON-LICENSE-001`](req/con-license-001.md) | GPLv3 を維持して移植元の帰属を保持する | ANA-LICENSE | C | PRT-C | SRC-C | — | `reviewed` |
 | [`FR-HIER-001`](req/fr-hier-001.md) | 階層を構成してプロセスを割り当てる | ANA-B2<br>ANA-B3 | B-2 | PRT-B2 | SRC-B2 | UT-B2<br>IT-01 | `reviewed` |
 | [`FR-SUM-001`](req/fr-sum-001.md) | 記録した作業時間を集計して表示する | ANA-B4 | C | PRT-C | SRC-C | UT-C<br>IT-02<br>ST-01 | `reviewed` |
-| [`FR-TIME-001`](req/fr-time-001.md) | 作業時間を計測して時間ログに記録する | ANA-B4<br>ANA-B9 | B-4 | PRT-B4 | SRC-B4 | UT-B4<br>IT-01<br>IT-02 | `reviewed` |
+| [`FR-TIME-001`](req/fr-time-001.md) | 作業時間を計測して時間ログに記録する | ANA-B4<br>ANA-B9 | B-4 | PRT-B4 | SRC-B4 | UT-B4<br>IT-01<br>IT-02<br>IT-03<br>ST-01 | `reviewed` |
 | [`NFR-DATA-001`](req/nfr-data-001.md) | 記録したデータを永続化して再起動後も参照できるようにする | ANA-B9 | B-9 | PRT-B9 | SRC-B9 | UT-B9<br>IT-01 | `reviewed` |
 | [`NFR-I18N-001`](req/nfr-i18n-001.md) | 英語と日本語で表示を切り替える | ANA-I18N | C | PRT-C | SRC-C | UT-C<br>ST-01 | `reviewed` |
 
@@ -55,7 +55,7 @@ Mermaid の Requirement Diagram は要求どうしの関係を表す記法であ
 | `CON-LICENSE-001` | `README-license.txt`<br>`src/net/sourceforge/processdash/util/StringUtils.java` | `bf5a4d6` |
 | `FR-HIER-001` | `src/net/sourceforge/processdash/hier/DashHierarchy.java`<br>`src/net/sourceforge/processdash/hier/PropertyKey.java`<br>`Templates/PSP-template.xml` | `bf5a4d6` |
 | `FR-SUM-001` | `src/net/sourceforge/processdash/ui/web/reports/`<br>`src/net/sourceforge/processdash/log/time/TimeLogEntry.java` | `bf5a4d6` |
-| `FR-TIME-001` | `src/net/sourceforge/processdash/log/time/TimeLogIOConstants.java`<br>`src/net/sourceforge/processdash/log/time/TimeLogEntry.java` | `bf5a4d6` |
+| `FR-TIME-001` | `src/net/sourceforge/processdash/log/time/TimeLoggingModel.java`<br>`src/net/sourceforge/processdash/log/time/DefaultTimeLoggingModel.java`<br>`src/net/sourceforge/processdash/log/time/TimeLogIOConstants.java`<br>`src/net/sourceforge/processdash/log/time/TimeLogEntry.java`<br>`src/net/sourceforge/processdash/hier/DefaultActiveTaskModel.java`<br>`src/net/sourceforge/processdash/log/ui/PauseButton.java`<br>`src/net/sourceforge/processdash/ui/web/dash/Control.java`<br>`src/net/sourceforge/processdash/ui/web/dash/DisplayState.java` | `bf5a4d6` |
 | `NFR-DATA-001` | `src/net/sourceforge/processdash/hier/DashHierarchy.java`<br>`src/net/sourceforge/processdash/log/time/TimeLogIOConstants.java` | `bf5a4d6` |
 | `NFR-I18N-001` | `src/net/sourceforge/processdash/i18n/Resources.java`<br>`Templates/resources/ProcessDashboard_ja.properties` | `bf5a4d6` |
 

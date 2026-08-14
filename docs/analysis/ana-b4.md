@@ -19,13 +19,29 @@ files:
   - src/net/sourceforge/processdash/log/time/DashboardTimeLog.java
   - src/net/sourceforge/processdash/hier/DefaultActiveTaskModel.java
   - src/net/sourceforge/processdash/log/ui/PauseButton.java
+  - src/net/sourceforge/processdash/ProcessDashboard.java
+  - src/net/sourceforge/processdash/DashController.java
+  - src/net/sourceforge/processdash/log/SaveableDataSource.java
+  - src/net/sourceforge/processdash/hier/ActiveTaskModel.java
+  - src/net/sourceforge/processdash/hier/ui/HierarchyNavigator.java
+  - src/net/sourceforge/processdash/ui/TaskNavigationSelector.java
+  - src/net/sourceforge/processdash/ui/QuickSelectTaskAction.java
+  - src/net/sourceforge/processdash/ui/PercentSpentIndicator.java
+  - src/net/sourceforge/processdash/log/ui/TaskTimeLoggingErrorWatcher.java
+  - src/net/sourceforge/processdash/ui/web/dash/Control.java
+  - src/net/sourceforge/processdash/ui/web/dash/DisplayState.java
+  - src/net/sourceforge/processdash/ui/web/api/TaskStatusApi.java
+  - src/net/sourceforge/processdash/ui/web/api/WebApiException.java
+  - src/net/sourceforge/processdash/ui/web/api/WebApiUtils.java
+  - test/src/net/sourceforge/processdash/log/time/DefaultTimeLoggingModelTest.java
+  - test/src/net/sourceforge/processdash/log/time/MockActiveTaskModel.java
 ---
 
 # 解析: B-4 時間ログ
 
 移植元が時間計測を開始・中断・再開・終了し、時間ログへ保存する挙動を、
-指定コミットの実装から記録する。第10章までは解析結果だけを扱い、移植先の設計は決めない。
-第11章には、後続の移植仕様で確定した事項を正本への参照として記録する。
+指定コミットの実装から記録する。第13章までは解析結果だけを扱い、移植先の設計は決めない。
+第14章以降には、後続の移植仕様で確定した事項と解析ゲートの結果を記録する。
 
 ---
 
@@ -46,14 +62,30 @@ files:
 | `TimeLogModifications.java` | 492行 | 変更追加、読み込み、保存 | `timelog2.xml` の即時保存 |
 | `DashboardTimeLog.java` | 207行 | **全体** | 計測可否と永続化への委譲 |
 | `DefaultActiveTaskModel.java` | 137行 | **全体** | 選択ノードを末端へ解決する処理 |
-| `PauseButton.java` | 395行 | 120〜310行 | 開始・中断・再開操作と表示状態 |
+| `PauseButton.java` | 395行 | **全体** | 開始・中断・再開操作と表示状態 |
+| `ProcessDashboard.java` | 2591行 | 520〜710、1150〜1235、1510〜1580、1918〜1970、1990〜2130、2150〜2280行 | モデルの接続、個人画面、競合検知、終了保存 |
+| `DashController.java` | 556行 | **全体** | Swingスレッド上のタスク選択・計測操作への入口 |
+| `SaveableDataSource.java` | 33行 | **全体** | 保存可能なモデルの契約 |
+| `ActiveTaskModel.java` | 72行 | **全体** | 選択タスクモデルの公開契約 |
+| `HierarchyNavigator.java` | 611行 | **全体** | 階層メニューから末端タスクを選択する経路 |
+| `TaskNavigationSelector.java` | 307行 | **全体** | 階層・タスクリスト・検索選択の切替と通知 |
+| `QuickSelectTaskAction.java` | 252行 | **全体** | 検索結果の末端タスクを選択する経路 |
+| `PercentSpentIndicator.java` | 553行 | ヘッダ、84〜183、250〜310行 | 計測状態と集計済み時間の画面表示 |
+| `TaskTimeLoggingErrorWatcher.java` | 197行 | **全体** | 完了タスク・長時間計測の警告 |
+| `Control.java` | 350行 | **全体** | 上流のHTTP操作入口 |
+| `DisplayState.java` | 195行 | **全体** | 上流の計測状態・階層のHTTP出力 |
+| `TaskStatusApi.java` | 170行 | **全体** | 上流Web APIの末端判定とエラー利用例 |
+| `WebApiException.java` | 81行 | **全体** | 上流Web APIの構造化エラー |
+| `WebApiUtils.java` | 65行 | **全体** | リクエスト元検証とエラー応答 |
+| `DefaultTimeLoggingModelTest.java` | 519行 | **全体** | 開始・中断・タスク切替・境界条件の上流テスト |
+| `MockActiveTaskModel.java` | 98行 | **全体** | 上流テスト用の選択タスクモデル |
 
 `TimeLogTableModel`、インポート、ロールアップ、集計、同期メッセージ、
 時間ログ編集画面は、既存記録の編集・集計・同期を主目的とし、計測の中核ではないため読んでいない。
 
 ## 2. 著作権とライセンス
 
-対象14ファイルのヘッダを個別に確認した。すべて著作権者は
+対象30ファイルのヘッダを個別に確認した。すべて著作権者は
 **Tuma Solutions, LLC** であり、GNU GPL version 3 またはそれ以降、ならびに
 上流 `README-license.txt` の追加許諾を掲げている。
 
@@ -63,6 +95,8 @@ files:
 | `Stopwatch.java` | 1998〜2016 |
 | `DefaultActiveTaskModel.java` | 2005〜2009 |
 | `PauseButton.java` | 2000〜2017 |
+| 第3段階Aで追加したアプリ配線・階層UI・Webコード | 1998〜2025（ファイルごとに異なる） |
+| 第3段階Aで追加した上流テスト | 2005〜2016（ファイルごとに異なる） |
 
 Tuma Solutions 以外の著作権表示、LGPL、Apache License、Sun Microsystems の表示は、
 今回の対象ファイルにはなかった。したがって対象はGPLv3本体コードの層に属する。
@@ -258,7 +292,124 @@ XMLの改行は実行環境の `line.separator` を使用する。
 Swingのタイマーやボタン表示は画面側の関心である。ただし、これは依存境界の観察であり、
 本解析では移植先の関数構成を決めない。
 
-## 11. 移植仕様で確定した事項
+## 11. 画面操作から保存までの経路
+
+### 11.1 起動時の接続
+
+`ProcessDashboard` は階層を読み込んだ後に `DefaultActiveTaskModel` を作り、
+`DashboardTimeLog` の `TimeLoggingModel` へ渡す。その後に `PauseButton`、
+`TaskNavigationSelector`、`TaskTimeLoggingErrorWatcher` を同じモデルへ接続する。
+したがって選択タスクと計測状態は別々の画面部品が持つ値ではなく、
+`ActiveTaskModel` と `TimeLoggingModel` が共有する状態である。
+
+### 11.2 タスク選択
+
+通常の階層メニューでは `HierarchyNavigator.HierMenuItem` が選択された子を更新し、
+子を持つ限り選択済みの子をたどる。末端へ到達すると
+`ActiveTaskModel.setNode` を呼ぶ。検索選択では `QuickSelectTaskAction` が
+選択された末端のパスを `ActiveTaskModel.setPath` へ渡す。
+
+`DefaultActiveTaskModel` は親ノードを受け取っても、各階層の選択済みの子、
+または選択位置が不正な場合は先頭の子をたどって末端へ解決する。変更後は各親の
+選択位置を更新し、プロパティ変更を通知する。
+
+`DefaultTimeLoggingModel.ExternalChangeListener` はこの通知を受け、次の順序で処理する。
+
+1. 旧タスクに現在行があれば保存し、現在行とStopwatchを解放する。
+2. 新しい末端タスクを現在タスクにする。
+3. 変更前が計測中なら、新しいStopwatchを作って新しいタスクの計測を続ける。
+4. アクティブタスク変更イベントを通知し、画面を更新する。
+
+同じタスクを再選択した場合は何も行わない。存在しないパスやフェーズを
+`PauseButton` 経由で選んだ場合は計測を中断し、警告音を鳴らして失敗を返す。
+
+### 11.3 開始・中断・再開・終了保存
+
+`PauseButton` の再生操作は `setPaused(false)` から `startTiming` を呼び、
+中断操作は `setPaused(true)` から `stopTiming` を呼ぶ。`startTiming` は初回開始と
+中断後の再開を兼ねる。`stopTiming` はStopwatchを止めて現在行を保存するが、
+現在行を解放しないため、利用者の明示的な「計測終了」ではなく中断に相当する。
+
+移植元の主画面には、現在の計測を独立して正式終了するボタンがない。現在行を
+解放して区切る主な経路は別タスクへの切替、長時間の末尾中断、全データ保存である。
+通常終了では `ProcessDashboard.quit` が `saveAllData` を呼び、
+`saveTimeLogData` が中断、現在行の解放、時間ログの保存を順に行う。別端末のロックを
+検知して強制終了する場合も、先に計測を中断して全データを保存する。
+
+### 11.4 定期保存と画面表示
+
+`DefaultTimeLoggingModel` のSwingタイマーは、開始から約1分後に最初の更新を行う。
+1分の現在行が作られるまでは5秒間隔で境界を確認し、作成後は通常1分間隔へ戻る。
+`handleTimerEvent` は現在行を更新し、変更ログを即時保存する。
+
+`PauseButton` は計測可否、計測中、中断中に応じて有効状態、選択状態、アイコン、
+ツールチップを変える。`PercentSpentIndicator` は集計済みの実績時間や見積り比率を
+表示できるが、現在セッションの正味時間を時分秒で表示する部品ではない。
+
+`TaskTimeLoggingErrorWatcher` は計測開始の20秒後、その後は1時間間隔で、完了済み
+タスクへの計測と長時間継続を警告する。利用者が継続しない場合は `stopTiming` で
+中断する。最近使ったパス、警告音、倍率、完了タスク警告、長時間警告は設定値を持つ。
+
+### 11.5 上流テストで確認した範囲
+
+`DefaultTimeLoggingModelTest` は開始・中断・再開、計測中のタスク切替、同じタスクの
+再選択、計測不可パスへ変更した場合の自動中断、長い末尾中断、停止済み状態への
+再停止を検証している。一方、階層編集中の改名や計測可否変更を含む
+`ActiveTaskModel` 差替えには `FIXME_TIMELOG` が残る。第3段階で扱う末端選択と
+通常のタスク切替は実装とテストの両方で確認でき、階層編集中の差替えは対象外である。
+
+## 12. 移植元のWeb制御とエラー
+
+### 12.1 HTTPから計測モデルまで
+
+`Control` はPOSTされたスクリプト名から操作を判別する。`setPath` はSwingの
+イベントディスパッチスレッドで同期実行し、パスと任意のフェーズの選択に成功した
+場合だけ、指定があれば `startTiming` を非同期に要求する。単独の `startTiming` と
+`stopTiming` も `DashController` を経由してSwingスレッド上の
+`TimeLoggingModel` へ委譲する。
+
+このWeb制御の `stopTiming` も正式終了ではなく中断である。成功時は通常、状態を
+含まない空文書を返す。パス選択と計測開始を一体のトランザクションにはしていない。
+
+`DisplayState.getTimingState` は次の2値だけをプレーンテキストで返す。
+
+- `activeTask`: 選択中のパス。
+- `isTiming`: `paused` の反転値。
+
+正味時間、中断時間、開始時刻、更新番号は返さない。階層取得は別経路でXMLの木を返し、
+要求された場合はパスと末端判定を属性に含める。
+
+### 12.2 上流Web APIの入力検証とエラー
+
+`TaskStatusApi` は時間計測APIではないが、対象パスが存在し、末端であることを
+サーバ側で検証する実例である。パス未指定時は現在の選択タスクを使い、存在しなければ
+404、親ノードなら400を返す。
+
+`WebApiException` はHTTP状態、エラーコード、説明、属性を保持し、`stat=fail` と
+`err` を持つJSONへ変換する。`WebApiUtils` は個別設定で許可されていない限り、
+ローカル以外の送信元を拒否する。説明文を応答に含める点は、メッセージキーだけを返す
+移植先のi18n方針とは異なる。
+
+## 13. 直接対応がないWeb固有挙動
+
+移植元全体で、主画面、既存Web制御、状態取得、Web APIの候補を検索した。
+第3段階B・Cに必要な次の挙動には直接対応する実装がない。
+
+| 移植先で必要な挙動 | 移植元で最も近い挙動 | 直接対応がない根拠 |
+|---|---|---|
+| 明示的な計測終了 | タスク切替または全データ保存で現在行を解放 | 主画面と`Control`の停止操作は中断であり、終了専用操作がない |
+| 未終了セッションの復元 | 現在行を通常1分間隔で正式ログへ更新 | 新しいモデルは`paused=true`、Stopwatchなしで起動し、実行状態を復元しない |
+| 1秒ごとの正味時間表示 | 集計済み実績時間、計測中アイコン | `TimeLoggingModel`と既存状態APIは現在区間の表示値を公開しない |
+| チェックポイントAPI | Swingタイマーによる現在行の更新 | クライアント区間を受け取るAPIがない |
+| 楽観ロックと409 | 外部追加時に時刻を比較して重複を打ち切る | 複数画面が同じセッションを更新するversion契約がない |
+| ブラウザ再読込み | デスクトッププロセスが状態を保持 | ブラウザのライフサイクル自体がない |
+| 計測終了時のコメント入力 | 自動作成する現在行のコメントは`null` | `PauseButton`と既存Web制御にコメント入力がない |
+
+したがって、専用の `stop`、`ActiveTimeSession`、1秒表示、チェックポイント、復元、
+version競合はWeb化のための追加である。移植元の利用者目的に最も近いタスク選択、
+開始・中断・再開、定期保存、終了保存の順序を保ち、技術要素だけを置き換える必要がある。
+
+## 14. 移植仕様で確定した事項
 
 以下は解析時には確認事項だったが、`PRT-B4` の作成時に確定した。
 移植先の詳細な根拠とテスト仕様は
@@ -279,3 +430,29 @@ Swingのタイマーやボタン表示は画面側の関心である。ただし
 | 1秒ごとの表示 | 中核モデルは通常1分間隔で保存更新する | 正味作業時間だけを毎秒表示し、総経過時間は表示しない |
 | システム時計の逆行 | `Date` の差をそのまま使う | 表示区間は単調時計、永続時刻と復元はサーバ時計を使う |
 | ブラウザ障害 | デスクトッププロセス内の状態を定期保存する | 操作時と通常1分間隔でサーバへ保存し、未終了セッションを復元する |
+
+## 15. 第3段階Aの解析ゲート
+
+第3段階B・Cの影響範囲を、階層選択、画面イベント、HTTP境界、状態遷移、
+定期保存、終了保存、エラー、再読込み、競合、総合テストとして再監査した。
+
+| 確認項目 | 結果 | 根拠 |
+|---|---|---|
+| 上流SHAと手元の一致 | **PASS** | `bf5a4d63aff08410f79840001c816b37392e5001` で一致 |
+| 対象ファイルとイベント経路 | **PASS** | 第1章と第11・12章でファイル、クラス、呼出し順序を特定 |
+| 状態、境界、失敗、保存 | **PASS** | 第3〜9章と上流テストで確認 |
+| UI・Web・モデル・永続化の隣接処理 | **PASS** | 選択から終了保存までを第11章で追跡 |
+| Web固有機能の対応候補検索 | **PASS** | 直接対応がない機能と検索結果を第13章に記録 |
+| 全対象ファイルのヘッダ | **PASS** | 30ファイルすべてTuma Solutions、GPLv3以降 |
+| 第三者・CMU特別許諾物の混入 | **PASS** | 対象30ファイルのヘッダに該当表示なし |
+| 移植元との差異と理由 | **PASS** | 第14章とPRT-B4に記録 |
+| 今回へ影響する未確認事項 | **PASS** | 階層編集中の差替えと同期は第3段階B・Cの対象外 |
+| 要求・ARC・PRT・テストへの追跡 | **PASS** | FR-TIME-001、ARC 6.4・7・8、PRT-B4へ接続 |
+
+解析ゲートは **PASS** とする。第3段階BではOpenAPIの具体的な入出力、
+Next.js依存のライセンス、第3段階CではReactの画面構成とPlaywrightのテスト設備を
+確定する。これらは上流挙動の未確認ではなく、Web化後の実装設計として後続段階で扱う。
+
+最近使ったパス、タスクリスト切替、警告音、倍率、完了タスク警告、長時間計測警告、
+階層編集中のモデル差替え、外部クライアント同期はM1の第3段階B・Cへ含めない。
+将来追加する場合は要求を定義し、その作業範囲で解析ゲートを再実行する。

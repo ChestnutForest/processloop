@@ -18,8 +18,14 @@ spec_count: 20
 source:
   upstream_sha: bf5a4d63aff08410f79840001c816b37392e5001
   files:
+    - src/net/sourceforge/processdash/log/time/TimeLoggingModel.java
+    - src/net/sourceforge/processdash/log/time/DefaultTimeLoggingModel.java
     - src/net/sourceforge/processdash/log/time/TimeLogIOConstants.java
     - src/net/sourceforge/processdash/log/time/TimeLogEntry.java
+    - src/net/sourceforge/processdash/hier/DefaultActiveTaskModel.java
+    - src/net/sourceforge/processdash/log/ui/PauseButton.java
+    - src/net/sourceforge/processdash/ui/web/dash/Control.java
+    - src/net/sourceforge/processdash/ui/web/dash/DisplayState.java
   analysis_refs:
     - ANA-B4
     - ANA-B9
@@ -29,6 +35,8 @@ test_refs:
   - UT-B4
   - IT-01
   - IT-02
+  - IT-03
+  - ST-01
 ---
 
 # FR-TIME-001 作業時間を計測して時間ログに記録する
@@ -164,8 +172,7 @@ stateDiagram-v2
 
 ## 関連資料
 
-- 解析: `../../analysis/b1-b4-report.md`（永続化の4系統）
-- 解析: `../../analysis/persistence-report.md`
-- 移植元: `log/time/TimeLogIOConstants.java` @`bf5a4d6`
-- 移植仕様: `../units/prt-b4-time-log.md`
+- 解析: [ANA-B4](../../analysis/ana-b4.md)
+- 移植元: `log/time/TimeLoggingModel.java`ほか30ファイル @`bf5a4d6`
+- 移植仕様: [PRT-B4](../units/prt-b4-time-log.md)
 - PSP 計測: `../../psp-data/README.md`

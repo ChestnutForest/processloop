@@ -34,9 +34,9 @@ PSP、TSP、Personal Software Process、Team Software Process はカーネギー
 | 移植着手前の調査 | 完了（構造調査 33.7%、主要な設計判断はすべて確定） |
 | 開発環境 | 完了（Node 24 / pnpm ワークスペース / Vitest） |
 | **A-1（プリプロセッサ）** | **完了**（TypeScript 315行、テスト22件） |
-| B-4（時間ログ）の移植元解析 | **完了**（[ANA-B4](docs/analysis/ana-b4.md)） |
-| B-4（時間ログ）の移植設計 | **完了**（[PRT-B4](docs/phase1/units/prt-b4-time-log.md)。確認事項を確定） |
-| B-4（時間ログ）の実装 | **第2段階完了**（ドメイン435行＋セッション永続化318行、単体・結合テスト21件。API・frontendは未実装） |
+| B-4（時間ログ）の移植元解析 | **第3段階A完了**（[ANA-B4](docs/analysis/ana-b4.md)。API・画面まで30ファイルを解析しゲートPASS） |
+| B-4（時間ログ）の移植設計 | **第3段階A完了**（[PRT-B4](docs/phase1/units/prt-b4-time-log.md)。API・画面境界と後続TODOを確定） |
+| B-4（時間ログ）の実装 | **第2段階完了**（ドメイン435行＋セッション永続化318行、単体・結合テスト21件。第3段階B・Cは未実装） |
 | M1（データ収集の最小構成） | **実装中（3/7：B-9、B-2、B-3 完了）** |
 | frontend | 未初期化（M1 に含む） |
 | 開発プロセスの定義 | 議論中（[成果物提案](docs/deliverables-proposal.md) 参照） |
@@ -70,14 +70,14 @@ processloop/
 ├─ docs/                 設計・移植メモ
 │   ├─ analysis/                  移植元の解析レポート
 │   │   ├─ ana-b3.md
-│   │   └─ ana-b4.md
+│   │   └─ ana-b4.md             B-4: 時間ログ＋API・画面操作経路
 │   ├─ phase1/                    第1期の仕様
 │   │   ├─ traceability-matrix.md トレーサビリティマトリクス（自動生成）
 │   │   ├─ units/                 移植仕様書（プログラム設計）
 │   │   │   ├─ prt-b9-persistence.md
 │   │   │   ├─ prt-b2-hierarchy.md
 │   │   │   ├─ prt-b3-process.md
-│   │   │   └─ prt-b4-time-log.md
+│   │   │   └─ prt-b4-time-log.md B-4: 第3段階Aまで仕様確定
 │   │   ├─ arc-architecture.md    アーキテクチャ仕様書（段階2まで記述）
 │   │   ├─ arc-outline.md         同 目次と段階分割の根拠
 │   │   └─ req/                   要求仕様（USDM・1要求1ファイル）
@@ -272,10 +272,10 @@ PROBE は過去の「見積り規模 vs 実績規模」に回帰分析をかけ�
 |---|---|
 | [docs/analysis/](docs/analysis/) | 移植元の解析レポート。実際にソースを読んだ結果と、読まなかった範囲 |
 | [docs/analysis/ana-b3.md](docs/analysis/ana-b3.md) | B-3 プロセス定義の読み込みに関する移植元の解析レポート |
-| [docs/analysis/ana-b4.md](docs/analysis/ana-b4.md) | B-4 時間ログの状態遷移、時間計算、中断、丸め、保存形式に関する移植元の解析レポート |
+| [docs/analysis/ana-b4.md](docs/analysis/ana-b4.md) | B-4 時間ログの状態遷移、保存、階層選択、画面イベント、既存Web制御、エラーに関する移植元の解析レポート |
 | [docs/phase1/units/](docs/phase1/units/) | 移植仕様書。ユニットごとに解析・設計・テスト仕様・トレーサビリティ・実績を1本にまとめる |
 | [docs/phase1/units/prt-b3-process.md](docs/phase1/units/prt-b3-process.md) | B-3 プロセス定義の読み込みに関する移植仕様書 |
-| [docs/phase1/units/prt-b4-time-log.md](docs/phase1/units/prt-b4-time-log.md) | B-4 時間ログの計測、チェックポイント、復元、競合制御に関する移植仕様書。ドメイン層とセッション永続化まで実装済み |
+| [docs/phase1/units/prt-b4-time-log.md](docs/phase1/units/prt-b4-time-log.md) | B-4 時間ログの計測、チェックポイント、復元、競合制御に関する移植仕様書。第3段階AでAPI・画面境界とB・CのTODOを確定 |
 | [docs/phase1/traceability-matrix.md](docs/phase1/traceability-matrix.md) | 工程と成果物の対応表。要求の Front Matter から自動生成する |
 | [docs/phase1/arc-architecture.md](docs/phase1/arc-architecture.md) | **移植先の設計仕様。** 層構成、Prisma スキーマ、永続化、画面、API、テスト方式。段階2まで記述 |
 | [docs/phase1/arc-outline.md](docs/phase1/arc-outline.md) | ARC の目次と3段階に分けた根拠 |
